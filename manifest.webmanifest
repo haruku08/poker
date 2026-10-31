@@ -1,6 +1,6 @@
 {
-  "name": "Poker Rules",
-  "short_name": "Poker Rules",
+  "name": "Haruko Poker",
+  "short_name": "Haruko Poker",
   "description": "Hand rankings, Texas Hold'em, blinds and betting, and more.",
   "start_url": "./",
   "scope": "./",
