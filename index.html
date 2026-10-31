@@ -402,6 +402,41 @@
   .tabbar a[aria-current="page"] .ic { transform: translateY(-2px) scale(1.12); }
   .tabbar a:nth-child(2) .ic, .tabbar a:nth-child(4) .ic { color: var(--suit-red); }
 
+
+  /* ---------- Share ---------- */
+  .hero { position: relative; }
+  .share-top {
+    position: absolute; top: calc(env(safe-area-inset-top, 0px) + 14px); right: max(14px, env(safe-area-inset-right, 0px));
+    border: 0; cursor: pointer; border-radius: 999px; padding: 8px 14px;
+    background: rgba(255,255,255,.14); color: #fff; font-weight: 800; font-size: 15px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .share-top svg, .share-big svg { width: 18px; height: 18px; }
+  .share-big {
+    width: 100%; border: 0; cursor: pointer; border-radius: 22px; padding: 16px;
+    background: var(--chip-gold); color: #3b2a00; font-weight: 800; font-size: 17px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .sheet-back { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.45); display: grid; align-items: end; }
+  .sheet {
+    background: var(--surface); color: var(--ink);
+    border-radius: 28px 28px 0 0; max-width: 640px; width: 100%; margin: 0 auto;
+    padding: 22px max(20px, env(safe-area-inset-right, 0px)) calc(22px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+    display: grid; gap: 14px; justify-items: center; text-align: center;
+    animation: slideup .25s ease-out;
+  }
+  @keyframes slideup { from { transform: translateY(40px); opacity: .5; } to { transform: none; opacity: 1; } }
+  .sheet h3 { font-size: 22px; }
+  .sheet p { color: var(--muted); font-size: 15px; }
+  .qr { background: #fff; padding: 12px; border-radius: 18px; border: 1px solid var(--line); line-height: 0; }
+  .qr svg { width: 180px; height: 180px; display: block; }
+  [hidden] { display: none !important; }
+  .sheet .link { font-weight: 800; font-size: 15px; user-select: all; -webkit-user-select: all; word-break: break-all; }
+  .sheet-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+  .sheet-btns .btn { width: 100%; }
+  .toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 16px); transform: translateX(-50%); z-index: 50;
+    background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 800; font-size: 15px; }
+
   footer { color: var(--muted); font-size: 13px; text-align: center; padding-block: 18px 6px; }
 </style>
 </head>
@@ -410,6 +445,7 @@
 <!-- ================= HOME ================= -->
 <section class="view" id="home" aria-label="Home">
   <div class="hero">
+    <button class="share-top" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share</button>
     <div class="wrap">
       <div class="fan" aria-hidden="true">
         <span class="card" data-c="TS"></span><span class="card" data-c="JS"></span><span class="card" data-c="QS"></span><span class="card" data-c="KS"></span><span class="card" data-c="AS"></span>
@@ -426,6 +462,7 @@
       <a class="door" href="#answers"><span class="chip green"></span><h3>Settle it</h3><p>Quick yes or no answers</p></a>
       <a class="door wide" href="#games"><span class="chip plum"></span><h3>More games</h3><p>Omaha, Five Card Draw, Seven Card Stud and wild cards</p></a>
     </nav>
+    <button class="share-big" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share Haruku Poker with the table</button>
     <footer>Agree on house rules before the first hand. Have fun!</footer>
   </div>
 </section>
@@ -711,6 +748,22 @@
   </div>
 </nav>
 
+<div class="sheet-back" id="share-sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <h3 id="share-title">Share Haruku Poker</h3>
+    <p>Let the others scan this with their phone camera.</p>
+    <div class="qr" id="qr" aria-label="QR code for the app link"></div>
+    <span class="link" id="share-link"></span>
+    <div class="sheet-btns">
+      <button class="btn ghost" id="copy-link">Copy link</button>
+      <button class="btn" id="send-link">Send link</button>
+    </div>
+    <button class="btn ghost" id="close-share" style="width:100%">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="vendor/qrcode.js"></script>
 <script>
 (function () {
   const SUITS = { S: "♠", H: "♥", D: "♦", C: "♣" };
@@ -850,6 +903,46 @@
   prev.addEventListener("click", () => { if (step > 0) { step--; render(); } });
   next.addEventListener("click", () => { step = step === STEPS.length - 1 ? 0 : step + 1; render(); });
   render();
+
+
+  // ---------- Share ----------
+  const APP_URL = "https://haruku08.github.io/poker/";
+  const sheet = document.getElementById("share-sheet"), toast = document.getElementById("toast");
+  document.getElementById("share-link").textContent = APP_URL.replace("https://", "");
+  let qrDone = false, toastTimer;
+  function say(msg) {
+    toast.textContent = msg; toast.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { toast.hidden = true; }, 2200);
+  }
+  function openSheet() {
+    sheet.hidden = false;
+    if (!qrDone) {
+      const box = document.getElementById("qr");
+      if (window.qrcode) {
+        const qr = qrcode(0, "M"); qr.addData(APP_URL); qr.make();
+        box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+        qrDone = true;
+      }
+      else box.hidden = true; // no internet the first time: just show the link
+    }
+    document.getElementById("send-link").focus();
+  }
+  function closeSheet() { sheet.hidden = true; }
+  document.querySelectorAll("[data-share]").forEach(b => b.addEventListener("click", openSheet));
+  document.getElementById("close-share").addEventListener("click", closeSheet);
+  sheet.addEventListener("click", e => { if (e.target === sheet) closeSheet(); });
+  addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+  async function copy() {
+    try { await navigator.clipboard.writeText(APP_URL); say("Link copied!"); }
+    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("share-link")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); say("Link selected. Press and hold to copy."); }
+  }
+  document.getElementById("copy-link").addEventListener("click", copy);
+  const send = document.getElementById("send-link");
+  if (!navigator.share) send.hidden = true, document.querySelector(".sheet-btns").style.gridTemplateColumns = "1fr";
+  send.addEventListener("click", async () => {
+    try { await navigator.share({ title: "Haruku Poker", text: "Poker rules for our game night", url: APP_URL }); }
+    catch (e) { if (e.name !== "AbortError") copy(); }
+  });
 
   // ---------- Views ----------
   const views = [...document.querySelectorAll(".view")];
