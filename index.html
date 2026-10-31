@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Poker Rules</title>
+<meta name="description" content="Pocket poker rules: hand rankings, Texas Hold'em, blinds and betting, plus Omaha, Five Card Draw and Seven Card Stud.">
+<meta name="theme-color" content="#0f5132">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Poker Rules">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+  :root {
+    --felt: #0f5132;
+    --felt-dark: #0a3a24;
+    --bg: #f4f1ea;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --muted: #5f6368;
+    --border: #e2ddd2;
+    --accent: #0f5132;
+    --accent-soft: #e3f1e9;
+    --gold: #b8860b;
+    --red: #c62828;
+    --card-bg: #ffffff;
+    --card-black: #1d1d1f;
+    --warn-soft: #fff4d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101412;
+      --surface: #1a201d;
+      --text: #ecefed;
+      --muted: #a3aba7;
+      --border: #2c3531;
+      --accent: #5cc48b;
+      --accent-soft: #1d3328;
+      --gold: #e0b44c;
+      --warn-soft: #3a3120;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 120px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.5;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--felt);
+    color: #fff;
+    padding: calc(env(safe-area-inset-top) + 10px) 16px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  header h1 { margin: 0 0 8px; font-size: 20px; letter-spacing: .3px; }
+  header h1 span { color: #f5d77a; }
+  nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    flex: 0 0 auto;
+    color: #fff; text-decoration: none;
+    padding: 8px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    font-size: 15px; font-weight: 600;
+    white-space: nowrap;
+  }
+  nav a[aria-current="page"] { background: #f5d77a; color: var(--felt-dark); }
+  main { max-width: 720px; margin: 0 auto; padding: 16px; }
+  section[data-page] { display: none; }
+  section[data-page].active { display: block; }
+  h2 { font-size: 24px; margin: 8px 0 4px; }
+  h3 { font-size: 19px; margin: 22px 0 6px; }
+  p { margin: 8px 0; }
+  .lead { color: var(--muted); margin-top: 0; }
+  .box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+  .tip { background: var(--accent-soft); border-color: transparent; }
+  .warn { background: var(--warn-soft); border-color: transparent; }
+  .tip strong:first-child, .warn strong:first-child { display: block; margin-bottom: 2px; }
+
+  /* Hand ranking list */
+  ol.ranks { list-style: none; padding: 0; margin: 12px 0; counter-reset: r; }
+  ol.ranks > li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px 14px;
+    margin: 10px 0;
+    position: relative;
+  }
+  .rank-head { display: flex; align-items: baseline; gap: 10px; }
+  .rank-num {
+    flex: 0 0 auto;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--felt); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .rank-name { font-size: 19px; font-weight: 700; }
+  .aka { color: var(--muted); font-size: 14px; display: block; margin: 2px 0 0 40px; }
+  .rank-desc { margin: 6px 0 8px 40px; }
+  .rank-tie { margin: 8px 0 0 40px; font-size: 15px; color: var(--muted); }
+  .rank-tie b { color: var(--text); }
+  ol.ranks .hand { margin-left: 40px; }
+  .beats {
+    display: inline-block; font-size: 13px; font-weight: 700;
+    color: var(--gold); text-transform: uppercase; letter-spacing: .5px;
+    margin-left: 40px;
+  }
+
+  /* Playing cards */
+  .hand { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0; }
+  .card {
+    width: 44px; height: 62px;
+    border-radius: 7px;
+    background: var(--card-bg);
+    border: 1px solid #c9c4b8;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    color: var(--card-black);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-weight: 700; line-height: 1;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .card .r { font-size: 20px; }
+  .card .s { font-size: 20px; margin-top: 2px; }
+  .card.red { color: var(--red); }
+  .card.dim { opacity: .35; }
+  .card.back {
+    background: repeating-linear-gradient(45deg, #7a1f1f 0 5px, #9b2c2c 5px 10px);
+    border-color: #5a1515;
+  }
+  .hand .label { align-self: center; font-size: 14px; color: var(--muted); margin: 0 4px; }
+  @media (max-width: 360px) {
+    .card { width: 38px; height: 54px; }
+    .card .r, .card .s { font-size: 17px; }
+  }
+
+  /* Cheat sheet */
+  .cheat { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+  .cheat td { padding: 9px 12px; border-top: 1px solid var(--border); }
+  .cheat tr:first-child td { border-top: 0; }
+  .cheat td:first-child { width: 36px; font-weight: 700; color: var(--accent); text-align: center; }
+  .cheat td:last-child { color: var(--muted); font-size: 14px; text-align: right; }
+
+  /* Steps (betting rounds) */
+  ol.steps { list-style: none; padding: 0; margin: 12px 0; counter-reset: s; }
+  ol.steps > li {
+    counter-increment: s;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px 14px 12px 56px; margin: 10px 0; position: relative;
+  }
+  ol.steps > li::before {
+    content: counter(s);
+    position: absolute; left: 14px; top: 12px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--felt); color: #fff; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.steps h3 { margin: 2px 0 4px; font-size: 18px; }
+
+  /* Q&A */
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; margin: 10px 0; padding: 0 16px;
+  }
+  summary {
+    cursor: pointer; list-style: none; padding: 14px 0; font-weight: 700;
+    display: flex; justify-content: space-between; gap: 12px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--accent); font-size: 22px; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details > div { padding-bottom: 14px; }
+  .answer { font-weight: 700; color: var(--accent); }
+
+  /* Actions grid */
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .actions div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: 15px; }
+  .actions b { display: block; font-size: 17px; }
+
+  table.simple { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.simple th, table.simple td { text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.simple th { color: var(--muted); font-weight: 600; }
+
+  /* Table seat diagram */
+  .table-diagram { display: block; width: 100%; max-width: 360px; margin: 8px auto; }
+  .table-diagram text { font-family: inherit; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>♠ Poker <span>Rules</span></h1>
+  <nav aria-label="Sections">
+    <a href="#hands">Hand rankings</a>
+    <a href="#holdem">Texas Hold'em</a>
+    <a href="#betting">Blinds &amp; betting</a>
+    <a href="#disputes">Quick answers</a>
+    <a href="#variants">Other games</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ HAND RANKINGS ============ -->
+<section data-page="hands" id="hands">
+  <h2>Hand rankings</h2>
+  <p class="lead">From best (1) to worst (10). A hand always beats every hand below it. Only 5 cards count, even if you can choose from more.</p>
+
+  <ol class="ranks">
+    <li>
+      <div class="rank-head"><span class="rank-num">1</span><span class="rank-name">Royal flush</span></div>
+      <p class="rank-desc">A, K, Q, J, 10, all the same suit. The best possible hand.</p>
+      <div class="hand" data-cards="AS KS QS JS TS"></div>
+      <p class="rank-tie"><b>Tie?</b> Split the pot. No suit is better than another.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">2</span><span class="rank-name">Straight flush</span></div>
+      <p class="rank-desc">Five cards in a row, all the same suit.</p>
+      <div class="hand" data-cards="9H 8H 7H 6H 5H"></div>
+      <p class="rank-tie"><b>Tie?</b> The highest top card wins. 9-high beats 8-high.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">3</span><span class="rank-name">Four of a kind</span></div>
+      <span class="aka">Also called "poker", "quads" or "carré"</span>
+      <p class="rank-desc">Four cards of the same rank, plus any fifth card.</p>
+      <div class="hand" data-cards="QC QD QH QS 7D"></div>
+      <p class="rank-tie"><b>Tie?</b> Higher four wins (four Kings beat four Queens). If the same, the fifth card decides.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">4</span><span class="rank-name">Full house</span></div>
+      <span class="aka">Also called "full" or "boat"</span>
+      <p class="rank-desc">Three of a kind <em>plus</em> a pair.</p>
+      <div class="hand" data-cards="8S 8D 8C 4H 4S"></div>
+      <p class="rank-tie"><b>Tie?</b> The three matching cards decide first: 8-8-8-4-4 beats 7-7-7-A-A. If the three are the same, the higher pair wins.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">5</span><span class="rank-name">Flush</span></div>
+      <p class="rank-desc">Any five cards of the same suit, not in a row.</p>
+      <div class="hand" data-cards="AD JD 8D 6D 2D"></div>
+      <p class="rank-tie"><b>Tie?</b> Compare the highest card, then the next, and so on. Suits don't matter.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">6</span><span class="rank-name">Straight</span></div>
+      <span class="aka">Also called "street"</span>
+      <p class="rank-desc">Five cards in a row, mixed suits.</p>
+      <div class="hand" data-cards="TC 9D 8S 7H 6C"></div>
+      <p class="rank-tie"><b>Tie?</b> The highest top card wins. An Ace can be high (10-J-Q-K-A, the best straight) or low (A-2-3-4-5, the lowest straight), but you can't go "around the corner" (Q-K-A-2-3 is <em>not</em> a straight).</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">7</span><span class="rank-name">Three of a kind</span></div>
+      <span class="aka">Also called "trips", "set" or "brelan"</span>
+      <p class="rank-desc">Three cards of the same rank.</p>
+      <div class="hand" data-cards="7S 7H 7D KC 2S"></div>
+      <p class="rank-tie"><b>Tie?</b> Higher three wins. If the same, the highest other card decides.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">8</span><span class="rank-name">Two pair</span></div>
+      <p class="rank-desc">Two different pairs.</p>
+      <div class="hand" data-cards="JH JC 4S 4D AH"></div>
+      <p class="rank-tie"><b>Tie?</b> Compare the higher pair first, then the lower pair, then the fifth card.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">9</span><span class="rank-name">One pair</span></div>
+      <p class="rank-desc">Two cards of the same rank.</p>
+      <div class="hand" data-cards="TS TH 8C 5D 2C"></div>
+      <p class="rank-tie"><b>Tie?</b> Higher pair wins. If the same, compare the other three cards from the top down.</p>
+    </li>
+    <li>
+      <div class="rank-head"><span class="rank-num">10</span><span class="rank-name">High card</span></div>
+      <p class="rank-desc">Nothing of the above. Your highest card counts.</p>
+      <div class="hand" data-cards="AC JS 9H 6D 3C"></div>
+      <p class="rank-tie"><b>Tie?</b> Compare the highest card, then the next, and so on.</p>
+    </li>
+  </ol>
+
+  <h3>Cheat sheet</h3>
+  <table class="cheat">
+    <tr><td>1</td><td>Royal flush</td><td>A K Q J 10 same suit</td></tr>
+    <tr><td>2</td><td>Straight flush</td><td>in a row + same suit</td></tr>
+    <tr><td>3</td><td>Four of a kind</td><td>4 the same</td></tr>
+    <tr><td>4</td><td>Full house</td><td>3 + 2</td></tr>
+    <tr><td>5</td><td>Flush</td><td>same suit</td></tr>
+    <tr><td>6</td><td>Straight</td><td>in a row</td></tr>
+    <tr><td>7</td><td>Three of a kind</td><td>3 the same</td></tr>
+    <tr><td>8</td><td>Two pair</td><td>2 + 2</td></tr>
+    <tr><td>9</td><td>One pair</td><td>2 the same</td></tr>
+    <tr><td>10</td><td>High card</td><td>nothing</td></tr>
+  </table>
+
+  <div class="box tip">
+    <strong>Card order, high to low</strong>
+    A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2. All four suits (♠ ♥ ♦ ♣) are equal.
+  </div>
+</section>
+
+<!-- ============ TEXAS HOLD'EM ============ -->
+<section data-page="holdem" id="holdem">
+  <h2>Texas Hold'em</h2>
+  <p class="lead">The most popular poker game. 2 to 10 players, one normal 52-card deck, no jokers.</p>
+
+  <div class="box">
+    <strong>The idea in one sentence:</strong> everyone gets 2 secret cards, 5 shared cards are put face up in the middle, and you make the best 5-card hand from those 7 cards.
+  </div>
+
+  <div class="hand" data-cards="AH KD"><span class="label">your 2 cards</span></div>
+  <div class="hand" data-cards="KS 9C 4D 7H 2S"><span class="label">shared</span></div>
+  <p style="font-size:15px;color:var(--muted);margin-top:0">Here your best hand is a pair of Kings with an Ace (K-K-A-9-7).</p>
+
+  <h3>Before you start</h3>
+  <p>Pick a dealer. A round "button" (any coin or token works) shows who the dealer is. After each hand, the button moves one seat to the <b>left</b> (clockwise), so everybody gets a turn.</p>
+  <p>The two players to the left of the dealer put in the <b>blinds</b>: a forced small bet so there is always something to play for. See <a href="#betting">Blinds &amp; betting</a>.</p>
+
+  <h3>How a hand goes</h3>
+  <ol class="steps">
+    <li>
+      <h3>Blinds</h3>
+      <p>Player left of the dealer puts in the <b>small blind</b>. The next player puts in the <b>big blind</b> (usually double).</p>
+    </li>
+    <li>
+      <h3>Deal: 2 cards each</h3>
+      <p>Everyone gets 2 cards face down, one at a time, starting left of the dealer. Look at them, don't show anyone.</p>
+      <div class="hand" data-cards="?? ??"></div>
+      <p><b>Betting round 1 ("pre-flop").</b> Starts with the player left of the big blind. You must at least match the big blind to stay in.</p>
+    </li>
+    <li>
+      <h3>The flop: 3 cards</h3>
+      <p>The dealer puts 3 shared cards face up in the middle.</p>
+      <div class="hand" data-cards="KS 9C 4D"></div>
+      <p><b>Betting round 2.</b> From now on, betting starts with the first player still in, left of the dealer.</p>
+    </li>
+    <li>
+      <h3>The turn: 1 card</h3>
+      <p>A 4th shared card is put face up.</p>
+      <div class="hand" data-cards="KS 9C 4D 7H"></div>
+      <p><b>Betting round 3.</b></p>
+    </li>
+    <li>
+      <h3>The river: 1 card</h3>
+      <p>The 5th and last shared card is put face up.</p>
+      <div class="hand" data-cards="KS 9C 4D 7H 2S"></div>
+      <p><b>Betting round 4.</b> The last chance to bet.</p>
+    </li>
+    <li>
+      <h3>Showdown</h3>
+      <p>If more than one player is still in, they show their cards. The best 5-card hand wins the whole pot. Equal hands split the pot.</p>
+    </li>
+  </ol>
+
+  <div class="box tip">
+    <strong>Winning without showing</strong>
+    If everyone else folds (gives up), the last player left wins the pot right away and doesn't have to show their cards.
+  </div>
+
+  <h3>Using your cards</h3>
+  <ul>
+    <li>You can use <b>both</b>, <b>one</b> or <b>none</b> of your own 2 cards.</li>
+    <li>If the best hand is just the 5 shared cards ("playing the board"), everyone still in ties and splits the pot, unless someone can do better with their own cards.</li>
+    <li>Only the best 5 cards count. A 6th or 7th card never helps break a tie.</li>
+  </ul>
+
+  <div class="box warn">
+    <strong>Burn cards (optional)</strong>
+    In casinos the dealer throws away the top card face down before the flop, the turn and the river. At home you can skip this, but it helps against accidentally seeing the next card.
+  </div>
+</section>
+
+<!-- ============ BETTING ============ -->
+<section data-page="betting" id="betting">
+  <h2>Blinds &amp; betting</h2>
+  <p class="lead">How much do I have to put in, and when?</p>
+
+  <h3>The pot</h3>
+  <p>The <b>pot</b> is all the chips in the middle. Whoever wins the hand takes the whole pot.</p>
+
+  <h3>Small blind and big blind</h3>
+  <p>Before the cards are dealt, two players <em>must</em> put in chips:</p>
+  <svg class="table-diagram" viewBox="0 0 320 228" role="img" aria-label="Seats around the table: dealer, small blind to the left, big blind left of that, first to act left of the big blind">
+    <ellipse cx="160" cy="105" rx="120" ry="70" fill="#0f5132" stroke="#0a3a24" stroke-width="6"/>
+    <text x="160" y="100" fill="#f5d77a" font-size="13" text-anchor="middle" font-weight="700">TABLE</text>
+    <text x="160" y="118" fill="#cfe7da" font-size="11" text-anchor="middle">play goes clockwise →</text>
+    <!-- Dealer bottom -->
+    <circle cx="160" cy="185" r="20" fill="#fff" stroke="#333"/><text x="160" y="190" font-size="13" text-anchor="middle" font-weight="700" fill="#111">D</text>
+    <text x="160" y="224" font-size="11" text-anchor="middle" fill="currentColor">Dealer</text>
+    <!-- SB bottom-left -->
+    <circle cx="45" cy="150" r="20" fill="#f5d77a" stroke="#333"/><text x="45" y="155" font-size="12" text-anchor="middle" font-weight="700" fill="#111">SB</text>
+    <!-- BB top-left -->
+    <circle cx="45" cy="60" r="20" fill="#f5d77a" stroke="#333"/><text x="45" y="65" font-size="12" text-anchor="middle" font-weight="700" fill="#111">BB</text>
+    <!-- First to act top -->
+    <circle cx="160" cy="25" r="20" fill="#fff" stroke="#333"/><text x="160" y="30" font-size="11" text-anchor="middle" font-weight="700" fill="#111">1st</text>
+    <!-- other seats -->
+    <circle cx="275" cy="60" r="20" fill="#fff" stroke="#333"/>
+    <circle cx="275" cy="150" r="20" fill="#fff" stroke="#333"/>
+  </svg>
+  <ul>
+    <li><b>Small blind (SB):</b> the player directly left of the dealer. Puts in a small amount, for example 1 chip.</li>
+    <li><b>Big blind (BB):</b> the next player to the left. Puts in double, for example 2 chips.</li>
+    <li>The player left of the big blind is the first to act before the flop.</li>
+    <li>The blinds move with the dealer button, so everyone pays them in turn.</li>
+  </ul>
+  <div class="box tip">
+    <strong>Only 2 players?</strong>
+    The dealer is the small blind and acts first before the flop. The other player is the big blind. After the flop, the big blind acts first.
+  </div>
+
+  <h3>What you can do on your turn</h3>
+  <div class="actions">
+    <div><b>Check</b>Pass without betting. Only if nobody has bet yet this round.</div>
+    <div><b>Bet</b>Be the first to put chips in this round.</div>
+    <div><b>Call</b>Match the current bet to stay in.</div>
+    <div><b>Raise</b>Match the bet <em>and</em> add more.</div>
+    <div><b>Fold</b>Give up. Your cards go away and you lose what you already put in.</div>
+    <div><b>All-in</b>Put in all your chips.</div>
+  </div>
+
+  <h3>When does a betting round end?</h3>
+  <p>When everyone still in has put in the <b>same amount</b> this round (or everyone checked). Then the next cards are dealt. A player who has already acted gets another turn if someone raises after them.</p>
+
+  <h3>How much can I bet?</h3>
+  <table class="simple">
+    <tr><th>Style</th><th>Rule</th></tr>
+    <tr><td><b>No-limit</b><br><small>most common</small></td><td>Bet anything from one big blind up to all your chips.</td></tr>
+    <tr><td><b>Pot-limit</b></td><td>The biggest bet or raise is the size of the pot (after you call).</td></tr>
+    <tr><td><b>Fixed-limit</b><br><small>good for kids</small></td><td>Bets are a fixed size: 1 big blind in rounds 1 and 2, 2 big blinds in rounds 3 and 4. Max 1 bet + 3 raises per round.</td></tr>
+  </table>
+
+  <h3>Raise rules</h3>
+  <ul>
+    <li>The smallest bet is one big blind.</li>
+    <li>A raise must be at least as big as the previous bet or raise. Example: someone bets 4, you can raise to 8 or more (not to 6).</li>
+    <li>Say "raise" <em>before</em> you put chips in. Putting in chips one by one ("string bet") doesn't count as a raise, only as a call.</li>
+  </ul>
+
+  <h3>Example round</h3>
+  <div class="box">
+    <p>Blinds are 1 and 2. Anna is small blind (puts in 1), Ben is big blind (puts in 2).</p>
+    <p>Chris is first: <b>calls</b> 2. Dana <b>raises</b> to 6. Anna <b>folds</b> (her 1 stays in the pot). Ben <b>calls</b> 4 more (6 total). Chris <b>calls</b> 4 more.</p>
+    <p>Everyone left has put in 6, so the round is over. Pot: 1 + 6 + 6 + 6 = <b>19</b>. Now the flop.</p>
+  </div>
+
+  <h3>All-in and side pots</h3>
+  <p>You can never be forced out because you don't have enough chips. Put in everything you have ("all-in") and you stay in until the showdown, but you can only win from each other player as much as you put in.</p>
+  <p>Extra bets from the others go into a separate <b>side pot</b> that only they can win.</p>
+  <div class="box">
+    Example: Sam goes all-in with 10. Lisa and Tom both bet 30. The <b>main pot</b> is 30 (10 from each) and anyone can win it. The <b>side pot</b> is 40 (the extra 20 from Lisa and Tom), and only Lisa or Tom can win that.
+  </div>
+
+  <h3>Suggested home game setup</h3>
+  <table class="simple">
+    <tr><th>Chip</th><th>Value</th><th>Each player gets</th></tr>
+    <tr><td>White</td><td>1</td><td>10 (= 10)</td></tr>
+    <tr><td>Red</td><td>5</td><td>8 (= 40)</td></tr>
+    <tr><td>Blue / green</td><td>10</td><td>5 (= 50)</td></tr>
+    <tr><td colspan="2"><b>Total</b></td><td><b>100</b></td></tr>
+  </table>
+  <p>Start with blinds <b>1 / 2</b>. To make the game finish in time, double the blinds every 20 to 30 minutes (1/2, then 2/4, then 5/10, then 10/20...).</p>
+  <div class="box tip">
+    <strong>Playing with kids?</strong>
+    Fixed-limit (above) keeps the betting simple: every bet and raise is a fixed size, so nobody loses all their chips in one go.
+  </div>
+</section>
+
+<!-- ============ QUICK ANSWERS ============ -->
+<section data-page="disputes" id="disputes">
+  <h2>Quick answers</h2>
+  <p class="lead">The questions that always start a discussion at the table.</p>
+
+  <details>
+    <summary>Is a full house higher than a flush?</summary>
+    <div><p class="answer">Yes. Full house beats flush.</p>
+      <div class="hand" data-cards="8S 8D 8C 4H 4S"></div>
+      <p>beats</p>
+      <div class="hand" data-cards="AD JD 8D 6D 2D"></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Is a flush higher than four of a kind ("poker")?</summary>
+    <div><p class="answer">No. Four of a kind beats a flush, and also beats a full house.</p>
+      <div class="hand" data-cards="3C 3D 3H 3S 7D"></div>
+      <p>beats</p>
+      <div class="hand" data-cards="AH KH 9H 6H 2H"></div>
+      <p>Only a straight flush or royal flush beats four of a kind.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What exactly is a straight flush?</summary>
+    <div><p class="answer">Five cards in a row AND all the same suit.</p>
+      <div class="hand" data-cards="9H 8H 7H 6H 5H"></div>
+      <p>Same suit but not in a row is just a flush. In a row but mixed suits is just a straight. You need both. It beats everything except a higher straight flush (and the royal flush is simply the highest straight flush).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does a flush beat a straight?</summary>
+    <div><p class="answer">Yes. Flush beats straight.</p>
+      <p>Easy to remember: a flush is harder to get, so it's worth more.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does a straight beat three of a kind?</summary>
+    <div><p class="answer">Yes. Straight beats three of a kind.</p></div>
+  </details>
+
+  <details>
+    <summary>Is A-2-3-4-5 a straight?</summary>
+    <div><p class="answer">Yes, it's the lowest straight (called the "wheel").</p>
+      <div class="hand" data-cards="5S 4H 3D 2C AH"></div>
+      <p>It counts as 5-high, so 2-3-4-5-6 beats it.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Is Q-K-A-2-3 a straight?</summary>
+    <div><p class="answer">No. You can't go around the corner.</p>
+      <p>The Ace is either at the top (10-J-Q-K-A) or at the bottom (A-2-3-4-5), never in the middle.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Is one suit better than another?</summary>
+    <div><p class="answer">No. All suits are equal.</p>
+      <p>A hearts flush and a spades flush with the same cards tie and split the pot.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Two players have the same pair. Who wins?</summary>
+    <div><p class="answer">The player with the highest other card (the "kicker").</p>
+      <div class="hand" data-cards="KH KC AD 7S 3C"></div>
+      <p>beats</p>
+      <div class="hand" data-cards="KD KS QH 7C 3H"></div>
+      <p>Both have a pair of Kings, but the Ace beats the Queen.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Two full houses. Who wins?</summary>
+    <div><p class="answer">The higher three-of-a-kind part wins.</p>
+      <div class="hand" data-cards="9S 9H 9D 2C 2S"></div>
+      <p>beats</p>
+      <div class="hand" data-cards="8S 8D 8C AH AS"></div>
+      <p>Three 9s beat three 8s. The pair only matters if the three are equal.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>I have 3 pairs. Is that worth more?</summary>
+    <div><p class="answer">No. Only 5 cards count, so it's just two pair.</p>
+      <p>Use your two highest pairs, and the best remaining card as the fifth.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can there be a tie?</summary>
+    <div><p class="answer">Yes. If the best 5 cards are equal, the pot is split evenly.</p>
+      <p>An odd chip that can't be split goes to the first winner left of the dealer.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Do I have to show my cards if I win?</summary>
+    <div><p class="answer">Only at the showdown.</p>
+      <p>If everyone else folded, you win without showing. At a showdown, the last player who bet or raised shows first. If nobody bet in the last round, the first player left of the dealer shows first.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Someone has fewer chips than the bet. Are they out?</summary>
+    <div><p class="answer">No. They can go all-in with what they have.</p>
+      <p>See "All-in and side pots" under <a href="#betting">Blinds &amp; betting</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Is there a "five of a kind"?</summary>
+    <div><p class="answer">Not in normal poker.</p>
+      <p>A 52-card deck only has four of each rank. Five of a kind is only possible if you play with jokers or wild cards.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============ VARIANTS ============ -->
+<section data-page="variants" id="variants">
+  <h2>Other games</h2>
+  <p class="lead">Same hand rankings, different way of dealing. Blinds and betting work like Texas Hold'em unless it says otherwise.</p>
+
+  <h3>Omaha</h3>
+  <div class="box">
+    <p>Like Texas Hold'em, but everyone gets <b>4</b> cards instead of 2.</p>
+    <div class="hand" data-cards="AH KS 9S 8D"><span class="label">yours</span></div>
+    <div class="hand" data-cards="QH JH 5H 2H 7S"><span class="label">shared</span></div>
+    <p><b>The big rule:</b> you must use <b>exactly 2</b> of your own cards and <b>exactly 3</b> shared cards. Not more, not less.</p>
+    <p>Above, there are 4 hearts on the table and you have the A&hearts;. In Texas Hold'em that would be a flush. In Omaha it is <b>not</b>: you need 2 hearts from your own hand. Your best hand here is just Ace high (A-K + Q-J-7).</p>
+    <p>Usually played pot-limit ("PLO"). Hands are much stronger than in Hold'em, so a pair rarely wins.</p>
+  </div>
+
+  <h3>Five Card Draw</h3>
+  <div class="box">
+    <p>The classic "kitchen table" poker. No shared cards. Good for beginners and kids.</p>
+    <ol>
+      <li>Everyone puts in a small <b>ante</b> (for example 1 chip), or use blinds like Hold'em.</li>
+      <li>Everyone gets <b>5 cards</b> face down.</li>
+      <li><b>Betting round 1</b>, starting left of the dealer.</li>
+      <li><b>The draw:</b> in turn, each player may throw away 0 to 3 cards and gets the same number of new ones. (Many home games allow 4 if your last card is an Ace.)</li>
+      <li><b>Betting round 2.</b></li>
+      <li><b>Showdown:</b> best 5-card hand wins.</li>
+    </ol>
+  </div>
+
+  <h3>Seven Card Stud</h3>
+  <div class="box">
+    <p>No blinds and no shared cards. Some of your cards are face up so everyone can see them. Best for 2 to 7 players.</p>
+    <ol>
+      <li>Everyone puts in an <b>ante</b>.</li>
+      <li>Deal 2 cards face down and 1 face up to each player.
+        <div class="hand" data-cards="?? ?? 9C"></div>
+        The player with the <b>lowest</b> face-up card must start with a small forced bet (the "bring-in"). Betting round 1.</li>
+      <li>Deal a 4th card face up. Betting round 2.</li>
+      <li>Deal a 5th card face up. Betting round 3.</li>
+      <li>Deal a 6th card face up. Betting round 4.</li>
+      <li>Deal a 7th card face <b>down</b>. Betting round 5.
+        <div class="hand" data-cards="?? ?? 9C KD 9H 4S ??"></div></li>
+      <li>Showdown: best 5 of your 7 cards wins.</li>
+    </ol>
+    <p>From the 4th card on, the player with the <b>best face-up cards</b> starts each betting round.</p>
+  </div>
+
+  <h3>Fun home rules</h3>
+  <div class="box">
+    <p><b>Wild cards:</b> agree before the game that, for example, all 2s ("deuces wild") or jokers count as any card you want. With wild cards, <b>five of a kind</b> becomes possible and is the best hand of all, above the royal flush.</p>
+    <p>Always agree on house rules <em>before</em> the first hand.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Tip: add this page to your home screen to use it like an app, even offline.
+</footer>
+
+<script>
+  // Render playing cards from codes like "AS" (Ace of spades), "TH" (10 of hearts), "??" (face down).
+  const SUITS = { S: "♠", H: "♥", D: "♦", C: "♣" };
+  const SUIT_NAMES = { S: "spades", H: "hearts", D: "diamonds", C: "clubs" };
+  const RANK_NAMES = { A: "Ace", K: "King", Q: "Queen", J: "Jack", T: "10" };
+  document.querySelectorAll(".hand[data-cards]").forEach(el => {
+    const label = el.querySelector(".label");
+    const codes = el.dataset.cards.split(" ");
+    const frag = document.createDocumentFragment();
+    codes.forEach(code => {
+      const c = document.createElement("span");
+      c.className = "card";
+      if (code === "??") {
+        c.classList.add("back");
+        c.setAttribute("aria-label", "face-down card");
+      } else {
+        const r = code[0] === "T" ? "10" : code[0];
+        const s = code[1];
+        if (s === "H" || s === "D") c.classList.add("red");
+        c.innerHTML = `<span class="r">${r}</span><span class="s">${SUITS[s]}</span>`;
+        c.setAttribute("aria-label", `${RANK_NAMES[code[0]] || r} of ${SUIT_NAMES[s]}`);
+      }
+      frag.appendChild(c);
+    });
+    el.insertBefore(frag, label || null);
+    el.setAttribute("role", "img");
+  });
+
+  // Simple tabs driven by the URL hash, so links between sections work.
+  const pages = [...document.querySelectorAll("section[data-page]")];
+  const links = [...document.querySelectorAll("nav a")];
+  function show() {
+    const id = (location.hash || "#hands").slice(1);
+    const page = pages.find(p => p.id === id) || pages[0];
+    pages.forEach(p => p.classList.toggle("active", p === page));
+    links.forEach(a => {
+      const on = a.getAttribute("href") === "#" + page.id;
+      if (on) { a.setAttribute("aria-current", "page"); a.scrollIntoView({ block: "nearest", inline: "center" }); }
+      else a.removeAttribute("aria-current");
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", show);
+  show();
+
+  // Offline support when installed to the home screen.
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    navigator.serviceWorker.register("sw.js");
+  }
+</script>
+</body>
+</html>
