@@ -8,7 +8,7 @@ A pocket rules reference for poker nights, made to be passed around the table on
 - **Settle it**: quick yes/no answers to the usual table arguments
 - **Other games**: Omaha, Five Card Draw, Seven Card Stud, wild cards
 
-It's a single static page (`index.html`), no build step. Tap **Share** for a QR code the others can scan, or to send the link. On a phone, "Add to Home Screen" gives an app icon; it then works offline too. `vendor/qrcode.js` is [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT).
+English and German (switch at the top of the home screen; it remembers your choice). It's a single static page (`index.html`), no build step. Tap **Share** for a QR code the others can scan, or to send the link. On a phone, "Add to Home Screen" gives an app icon; it then works offline too. `vendor/qrcode.js` is [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT).
 
 ## Hosting
 
