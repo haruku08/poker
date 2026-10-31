@@ -1,5 +1,5 @@
 // Keeps the rules available offline. Bump VERSION when files change.
-const VERSION = "haruku-poker-v4";
+const VERSION = "haruku-poker-v5";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-180.png", "icon-192.png", "icon-512.png", "vendor/qrcode.js"];
 
 self.addEventListener("install", e => {
