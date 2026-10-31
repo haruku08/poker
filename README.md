@@ -1,4 +1,4 @@
-# Haruko Poker
+# Haruku Poker
 
 A pocket rules reference for poker nights, made to be passed around the table on a phone.
 
