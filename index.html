@@ -167,7 +167,8 @@
     overflow: hidden;
   }
   .hero .wrap { display: grid; gap: 10px; justify-items: center; text-align: center; }
-  .fan { position: relative; height: 112px; width: 220px; margin-bottom: 6px; }
+  .fan { position: relative; height: 112px; width: 220px; margin-bottom: 6px; pointer-events: none; }
+  .lang-switch, .share-top { z-index: 2; }
   .fan .card { --w: 64px; position: absolute; left: 50%; bottom: 0; transform-origin: 50% 230%; }
   .fan .card { justify-content: flex-start; align-items: flex-start; padding: 6px 7px; }
   .fan .card .r, .fan .card .s { font-size: 20px; margin: 0; }
@@ -412,6 +413,15 @@
     display: inline-flex; align-items: center; gap: 6px;
   }
   .share-top svg, .share-big svg { width: 18px; height: 18px; }
+  .lang-switch {
+    position: absolute; top: calc(env(safe-area-inset-top, 0px) + 14px); left: max(14px, env(safe-area-inset-left, 0px));
+    display: flex; padding: 3px; gap: 2px; border-radius: 999px; background: rgba(255,255,255,.14);
+  }
+  .lang-switch button {
+    border: 0; cursor: pointer; border-radius: 999px; padding: 6px 12px;
+    background: transparent; color: rgba(255,255,255,.8); font-weight: 800; font-size: 14px; letter-spacing: .04em;
+  }
+  .lang-switch button[aria-pressed="true"] { background: var(--chip-gold); color: #3b2a00; }
   .share-big {
     width: 100%; border: 0; cursor: pointer; border-radius: 22px; padding: 16px;
     background: var(--chip-gold); color: #3b2a00; font-weight: 800; font-size: 17px;
@@ -445,25 +455,28 @@
 <!-- ================= HOME ================= -->
 <section class="view" id="home" aria-label="Home">
   <div class="hero">
-    <button class="share-top" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share</button>
+    <div class="lang-switch" role="group" aria-label="Language / Sprache">
+      <button data-lang="en" aria-pressed="true">EN</button><button data-lang="de" aria-pressed="false">DE</button>
+    </div>
+    <button class="share-top" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-de="Teilen">Share</span></button>
     <div class="wrap">
       <div class="fan" aria-hidden="true">
         <span class="card" data-c="TS"></span><span class="card" data-c="JS"></span><span class="card" data-c="QS"></span><span class="card" data-c="KS"></span><span class="card" data-c="AS"></span>
       </div>
       <h1>Haruku <span>Poker</span></h1>
-      <p>Pass the phone around. No more arguing about what beats what.</p>
+      <p data-de="Gib das Handy herum. Nie wieder Streit darüber, was was schlägt.">Pass the phone around. No more arguing about what beats what.</p>
     </div>
   </div>
   <div class="wrap">
-    <nav class="doors" aria-label="Topics">
-      <a class="door" href="#hands"><span class="chip"></span><h3>What beats what?</h3><p>All 10 hands, best to worst</p></a>
-      <a class="door" href="#holdem"><span class="chip gold"></span><h3>Play Texas Hold'em</h3><p>A hand, step by step</p></a>
-      <a class="door" href="#betting"><span class="chip blue"></span><h3>Chips &amp; betting</h3><p>Blinds, raising, all-in</p></a>
-      <a class="door" href="#answers"><span class="chip green"></span><h3>Settle it</h3><p>Quick yes or no answers</p></a>
-      <a class="door wide" href="#games"><span class="chip plum"></span><h3>More games</h3><p>Omaha, Five Card Draw, Seven Card Stud and wild cards</p></a>
+    <nav class="doors" aria-label="Topics" data-de-aria="Themen">
+      <a class="door" href="#hands"><span class="chip"></span><h3 data-de="Was schlägt was?">What beats what?</h3><p data-de="Alle 10 Hände, von der besten zur schwächsten">All 10 hands, best to worst</p></a>
+      <a class="door" href="#holdem"><span class="chip gold"></span><h3 data-de="Texas Hold'em spielen">Play Texas Hold'em</h3><p data-de="Eine Runde, Schritt für Schritt">A hand, step by step</p></a>
+      <a class="door" href="#betting"><span class="chip blue"></span><h3 data-de="Chips &amp; Setzen">Chips &amp; betting</h3><p data-de="Blinds, Erhöhen, All-in">Blinds, raising, all-in</p></a>
+      <a class="door" href="#answers"><span class="chip green"></span><h3 data-de="Wer hat recht?">Settle it</h3><p data-de="Schnelle Antworten mit Ja oder Nein">Quick yes or no answers</p></a>
+      <a class="door wide" href="#games"><span class="chip plum"></span><h3 data-de="Weitere Spiele">More games</h3><p data-de="Omaha, Five Card Draw, Seven Card Stud und wilde Karten">Omaha, Five Card Draw, Seven Card Stud and wild cards</p></a>
     </nav>
-    <button class="share-big" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share Haruku Poker with the table</button>
-    <footer>Agree on house rules before the first hand. Have fun!</footer>
+    <button class="share-big" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-de="Haruku Poker mit dem Tisch teilen">Share Haruku Poker with the table</span></button>
+    <footer data-de="Sprecht Hausregeln vor dem ersten Spiel ab. Viel Spaß!">Agree on house rules before the first hand. Have fun!</footer>
   </div>
 </section>
 
@@ -471,35 +484,35 @@
 <section class="view" id="hands" aria-label="What beats what">
   <div class="wrap">
     <header class="page-head">
-      <span class="kicker">Hand rankings</span>
-      <h2>What beats what?</h2>
-      <p class="lead">Number 1 is the best. Any hand beats every hand below it. Only your best 5 cards count.</p>
+      <span class="kicker" data-de="Rangfolge der Hände">Hand rankings</span>
+      <h2 data-de="Was schlägt was?">What beats what?</h2>
+      <p class="lead" data-de="Nummer 1 ist die beste. Jede Hand schlägt alle Hände darunter. Es zählen nur deine besten 5 Karten.">Number 1 is the best. Any hand beats every hand below it. Only your best 5 cards count.</p>
     </header>
 
     <div class="stack">
       <div class="duel" aria-live="polite">
-        <h3>Hand duel</h3>
+        <h3 data-de="Hand-Duell">Hand duel</h3>
         <div class="duel-row">
-          <select id="duel-a" aria-label="First hand"></select>
+          <select id="duel-a" aria-label="First hand" data-de-aria="Erste Hand"></select>
           <span class="vs">VS</span>
-          <select id="duel-b" aria-label="Second hand"></select>
+          <select id="duel-b" aria-label="Second hand" data-de-aria="Zweite Hand"></select>
         </div>
         <div class="verdict" id="verdict"></div>
       </div>
 
       <ol class="ladder" id="ladder"></ol>
 
-      <div class="order-strip" aria-label="Card order from high to low: A K Q J 10 9 8 7 6 5 4 3 2">
-        <span>High</span><span>A</span><span>K</span><span>Q</span><span>J</span><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>Low</span>
+      <div class="order-strip" aria-label="Card order from high to low: A K Q J 10 9 8 7 6 5 4 3 2" data-de-aria="Kartenreihenfolge von hoch nach tief: A K Q J 10 9 8 7 6 5 4 3 2">
+        <span data-de="Hoch">High</span><span>A</span><span>K</span><span>Q</span><span>J</span><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span data-de="Tief">Low</span>
       </div>
 
       <div class="note">
-        <b>Memory trick</b>
-        <p>The harder a hand is to get, the more it's worth. That's why a flush (5 of one suit) beats a straight, and both lose to a full house.</p>
+        <b data-de="Merktrick">Memory trick</b>
+        <p data-de="Je schwerer eine Hand zu bekommen ist, desto mehr ist sie wert. Darum schlägt ein Flush (5 Karten einer Farbe) eine Straße, und beide verlieren gegen ein Full House.">The harder a hand is to get, the more it's worth. That's why a flush (5 of one suit) beats a straight, and both lose to a full house.</p>
       </div>
       <div class="note green">
-        <b>All suits are equal</b>
-        <p>Hearts don't beat spades. If two hands are exactly the same, the pot is split.</p>
+        <b data-de="Alle Farben sind gleich viel wert">All suits are equal</b>
+        <p data-de="Herz schlägt nicht Pik. Sind zwei Hände genau gleich, wird der Pot geteilt.">Hearts don't beat spades. If two hands are exactly the same, the pot is split.</p>
       </div>
     </div>
   </div>
@@ -510,37 +523,37 @@
   <div class="wrap">
     <header class="page-head">
       <span class="kicker">Texas Hold'em</span>
-      <h2>Play a hand, step by step</h2>
-      <p class="lead">You get 2 secret cards. 5 shared cards land in the middle. Make the best 5-card hand from those 7.</p>
+      <h2 data-de="Eine Runde, Schritt für Schritt">Play a hand, step by step</h2>
+      <p class="lead" data-de="Du bekommst 2 geheime Karten. 5 gemeinsame Karten kommen in die Mitte. Bilde aus diesen 7 die beste Hand mit 5 Karten.">You get 2 secret cards. 5 shared cards land in the middle. Make the best 5-card hand from those 7.</p>
     </header>
 
     <div class="stack">
       <div class="table" id="sim-table">
         <div class="zone">
-          <span class="lbl">Shared cards</span>
+          <span class="lbl" data-de="Gemeinsame Karten">Shared cards</span>
           <div class="cards" id="sim-board"></div>
         </div>
         <div class="pot" id="sim-pot"></div>
         <div class="zone">
           <div class="cards lg" id="sim-hand"></div>
-          <span class="lbl">Your cards</span>
+          <span class="lbl" data-de="Deine Karten">Your cards</span>
         </div>
       </div>
 
       <div class="step-card" id="sim-step" aria-live="polite"></div>
 
       <div class="stepper-nav">
-        <button class="btn ghost" id="sim-prev" aria-label="Previous step">Back</button>
+        <button class="btn ghost" id="sim-prev" aria-label="Previous step" data-de-aria="Vorheriger Schritt" data-de="Zurück">Back</button>
         <div class="dots" id="sim-dots"></div>
         <button class="btn" id="sim-next">Next</button>
       </div>
 
-      <h3 style="margin-top:10px">Good to know</h3>
+      <h3 style="margin-top:10px" data-de="Gut zu wissen">Good to know</h3>
       <ul class="ticks">
-        <li><span>You can use <b>2, 1 or even 0</b> of your own cards. Whatever makes the best 5.</span></li>
-        <li><span>If everyone else folds, you win straight away, and you don't have to show your cards.</span></li>
-        <li><span>The dealer button moves one seat to the <b>left</b> after every hand, so everyone gets a turn.</span></li>
-        <li><span>2 to 10 players, one normal deck, no jokers.</span></li>
+        <li><span data-de="Du kannst <b>2, 1 oder sogar 0</b> deiner eigenen Karten benutzen. Hauptsache, es ergibt die besten 5.">You can use <b>2, 1 or even 0</b> of your own cards. Whatever makes the best 5.</span></li>
+        <li><span data-de="Steigen alle anderen aus, gewinnst du sofort und musst deine Karten nicht zeigen.">If everyone else folds, you win straight away, and you don't have to show your cards.</span></li>
+        <li><span data-de="Der Dealer-Button wandert nach jeder Runde einen Platz nach <b>links</b>. So ist jeder mal dran.">The dealer button moves one seat to the <b>left</b> after every hand, so everyone gets a turn.</span></li>
+        <li><span data-de="2 bis 10 Spieler, ein normales Kartenspiel, keine Joker.">2 to 10 players, one normal deck, no jokers.</span></li>
       </ul>
     </div>
   </div>
@@ -550,92 +563,92 @@
 <section class="view" id="betting" aria-label="Chips and betting">
   <div class="wrap">
     <header class="page-head">
-      <span class="kicker">Chips &amp; betting</span>
-      <h2>How much do I put in?</h2>
-      <p class="lead">All the chips in the middle are the <b>pot</b>. Whoever wins the hand takes it all.</p>
+      <span class="kicker" data-de="Chips &amp; Setzen">Chips &amp; betting</span>
+      <h2 data-de="Wie viel muss ich setzen?">How much do I put in?</h2>
+      <p class="lead" data-de="Alle Chips in der Mitte sind der <b>Pot</b>. Wer die Runde gewinnt, bekommt alles.">All the chips in the middle are the <b>pot</b>. Whoever wins the hand takes it all.</p>
     </header>
 
     <div class="stack">
-      <h3>The blinds</h3>
-      <p>Before any cards are dealt, the two players left of the dealer <b>must</b> put in chips. That way there's always something to win.</p>
-      <svg class="seat-diagram" viewBox="0 0 320 236" role="img" aria-label="Dealer at the bottom. Going clockwise: small blind, then big blind, then the first player to act.">
+      <h3 data-de="Die Blinds">The blinds</h3>
+      <p data-de="Bevor Karten ausgeteilt werden, <b>müssen</b> die zwei Spieler links vom Dealer Chips setzen. So gibt es immer etwas zu gewinnen.">Before any cards are dealt, the two players left of the dealer <b>must</b> put in chips. That way there's always something to win.</p>
+      <svg class="seat-diagram" viewBox="0 0 320 236" role="img" aria-label="Dealer at the bottom. Going clockwise: small blind, then big blind, then the first player to act." data-de-aria="Dealer unten. Im Uhrzeigersinn: Small Blind, dann Big Blind, dann der Spieler, der zuerst dran ist.">
         <ellipse class="felt" cx="160" cy="118" rx="118" ry="72" stroke-width="7"/>
-        <text class="mid" x="160" y="114" text-anchor="middle">play goes</text>
-        <text class="mid" x="160" y="130" text-anchor="middle">clockwise ↻</text>
+        <text class="mid" x="160" y="114" text-anchor="middle" data-de="gespielt wird">play goes</text>
+        <text class="mid" x="160" y="130" text-anchor="middle" data-de="im Uhrzeigersinn ↻">clockwise ↻</text>
         <circle class="seat" cx="160" cy="196" r="21" stroke-width="2"/><text class="t ink" x="160" y="201" text-anchor="middle">D</text>
         <text class="cap" x="160" y="232" text-anchor="middle">Dealer</text>
         <circle class="seat blind" cx="46" cy="160" r="21"/><text class="t" x="46" y="165" text-anchor="middle">SB</text>
-        <text class="cap" x="46" y="198" text-anchor="middle">pays 1</text>
+        <text class="cap" x="46" y="198" text-anchor="middle" data-de="zahlt 1">pays 1</text>
         <circle class="seat blind" cx="46" cy="72" r="21"/><text class="t" x="46" y="77" text-anchor="middle">BB</text>
-        <text class="cap" x="46" y="40" text-anchor="middle">pays 2</text>
-        <circle class="seat first" cx="160" cy="36" r="21"/><text class="t light" x="160" y="41" text-anchor="middle">1st</text>
+        <text class="cap" x="46" y="40" text-anchor="middle" data-de="zahlt 2">pays 2</text>
+        <circle class="seat first" cx="160" cy="36" r="21"/><text class="t light" x="160" y="41" text-anchor="middle" data-de="1.">1st</text>
         <circle class="seat" cx="274" cy="72" r="21" stroke-width="2"/>
         <circle class="seat" cx="274" cy="160" r="21" stroke-width="2"/>
       </svg>
       <ul class="ticks">
-        <li><span><b>Small blind:</b> the player left of the dealer puts in a little (say 1 chip).</span></li>
-        <li><span><b>Big blind:</b> the next player puts in double (2 chips).</span></li>
-        <li><span>The player after the big blind starts the betting. The blinds move round with the dealer.</span></li>
+        <li><span data-de="<b>Small Blind:</b> Der Spieler links vom Dealer setzt ein bisschen (z. B. 1 Chip)."><b>Small blind:</b> the player left of the dealer puts in a little (say 1 chip).</span></li>
+        <li><span data-de="<b>Big Blind:</b> Der nächste Spieler setzt das Doppelte (2 Chips)."><b>Big blind:</b> the next player puts in double (2 chips).</span></li>
+        <li><span data-de="Der Spieler nach dem Big Blind fängt mit dem Setzen an. Die Blinds wandern mit dem Dealer weiter.">The player after the big blind starts the betting. The blinds move round with the dealer.</span></li>
       </ul>
 
-      <h3 style="margin-top:8px">Your move</h3>
+      <h3 style="margin-top:8px" data-de="Du bist dran">Your move</h3>
       <div class="moves">
-        <div class="move"><h3><span class="chip green"></span>Check</h3><p>Pass without betting. Only if nobody has bet yet.</p></div>
-        <div class="move"><h3><span class="chip blue"></span>Bet</h3><p>Be the first to put chips in this round.</p></div>
-        <div class="move"><h3><span class="chip green"></span>Call</h3><p>Put in the same as the bet to stay in.</p></div>
-        <div class="move"><h3><span class="chip"></span>Raise</h3><p>Match the bet and add more.</p></div>
-        <div class="move"><h3><span class="chip plum"></span>Fold</h3><p>Give up this hand. Chips you put in stay in the pot.</p></div>
-        <div class="move"><h3><span class="chip gold"></span>All-in</h3><p>Put in every chip you have.</p></div>
+        <div class="move"><h3 data-de='<span class="chip green"></span>Checken'><span class="chip green"></span>Check</h3><p data-de="Weitergeben, ohne zu setzen. Geht nur, wenn noch niemand gesetzt hat.">Pass without betting. Only if nobody has bet yet.</p></div>
+        <div class="move"><h3 data-de='<span class="chip blue"></span>Setzen'><span class="chip blue"></span>Bet</h3><p data-de="Als Erster in dieser Runde Chips setzen.">Be the first to put chips in this round.</p></div>
+        <div class="move"><h3 data-de='<span class="chip green"></span>Mitgehen'><span class="chip green"></span>Call</h3><p data-de="Gleich viel setzen wie der Einsatz, um dabei zu bleiben.">Put in the same as the bet to stay in.</p></div>
+        <div class="move"><h3 data-de='<span class="chip"></span>Erhöhen'><span class="chip"></span>Raise</h3><p data-de="Mitgehen und noch mehr draufsetzen.">Match the bet and add more.</p></div>
+        <div class="move"><h3 data-de='<span class="chip plum"></span>Aussteigen'><span class="chip plum"></span>Fold</h3><p data-de="Diese Runde aufgeben. Deine gesetzten Chips bleiben im Pot.">Give up this hand. Chips you put in stay in the pot.</p></div>
+        <div class="move"><h3><span class="chip gold"></span>All-in</h3><p data-de="Alle deine Chips setzen.">Put in every chip you have.</p></div>
       </div>
       <div class="note blue">
-        <b>When is a betting round over?</b>
-        <p>When everyone still playing has put in the same amount. Then the next cards come out.</p>
+        <b data-de="Wann ist eine Setzrunde vorbei?">When is a betting round over?</b>
+        <p data-de="Wenn alle, die noch mitspielen, gleich viel gesetzt haben. Dann kommen die nächsten Karten.">When everyone still playing has put in the same amount. Then the next cards come out.</p>
       </div>
 
-      <h3 style="margin-top:8px">Let's watch a round</h3>
+      <h3 style="margin-top:8px" data-de="Schauen wir uns eine Runde an">Let's watch a round</h3>
       <div class="story">
-        <p style="color:var(--muted);font-size:15px">Blinds are 1 and 2. Before the flop:</p>
-        <div class="story-line"><span class="who">Anna</span><span><span class="act blind">small blind</span> puts in 1</span></div>
-        <div class="story-line"><span class="who">Ben</span><span><span class="act blind">big blind</span> puts in 2</span></div>
-        <div class="story-line"><span class="who">Chris</span><span><span class="act call">calls</span> puts in 2</span></div>
-        <div class="story-line"><span class="who">Dana</span><span><span class="act raise">raises</span> to 6</span></div>
-        <div class="story-line"><span class="who">Anna</span><span><span class="act fold">folds</span> her 1 stays in the pot</span></div>
-        <div class="story-line"><span class="who">Ben</span><span><span class="act call">calls</span> adds 4 (now 6)</span></div>
-        <div class="story-line"><span class="who">Chris</span><span><span class="act call">calls</span> adds 4 (now 6)</span></div>
-        <p class="story-total">Everyone left has 6 in. Pot: 1 + 6 + 6 + 6 = 19. Time for the flop!</p>
+        <p style="color:var(--muted);font-size:15px" data-de="Die Blinds sind 1 und 2. Vor dem Flop:">Blinds are 1 and 2. Before the flop:</p>
+        <div class="story-line"><span class="who">Anna</span><span data-de='<span class="act blind">Small Blind</span> setzt 1'><span class="act blind">small blind</span> puts in 1</span></div>
+        <div class="story-line"><span class="who">Ben</span><span data-de='<span class="act blind">Big Blind</span> setzt 2'><span class="act blind">big blind</span> puts in 2</span></div>
+        <div class="story-line"><span class="who">Chris</span><span data-de='<span class="act call">geht mit</span> setzt 2'><span class="act call">calls</span> puts in 2</span></div>
+        <div class="story-line"><span class="who">Dana</span><span data-de='<span class="act raise">erhöht</span> auf 6'><span class="act raise">raises</span> to 6</span></div>
+        <div class="story-line"><span class="who">Anna</span><span data-de='<span class="act fold">steigt aus</span> ihr 1 Chip bleibt im Pot'><span class="act fold">folds</span> her 1 stays in the pot</span></div>
+        <div class="story-line"><span class="who">Ben</span><span data-de='<span class="act call">geht mit</span> legt 4 nach (jetzt 6)'><span class="act call">calls</span> adds 4 (now 6)</span></div>
+        <div class="story-line"><span class="who">Chris</span><span data-de='<span class="act call">geht mit</span> legt 4 nach (jetzt 6)'><span class="act call">calls</span> adds 4 (now 6)</span></div>
+        <p class="story-total" data-de="Alle, die noch dabei sind, haben 6 gesetzt. Pot: 1 + 6 + 6 + 6 = 19. Zeit für den Flop!">Everyone left has 6 in. Pot: 1 + 6 + 6 + 6 = 19. Time for the flop!</p>
       </div>
 
-      <h3 style="margin-top:8px">How big can a bet be?</h3>
+      <h3 style="margin-top:8px" data-de="Wie hoch darf ein Einsatz sein?">How big can a bet be?</h3>
       <div class="limits">
-        <div class="limit"><span class="chip gold"></span><h3>Fixed-limit <span class="badge">best with kids</span></h3><p>Every bet is a set size: 2 chips in the first two rounds, 4 in the last two. Max 4 bets per round.</p></div>
-        <div class="limit"><span class="chip blue"></span><h3>Pot-limit</h3><p>You can bet up to the size of the pot.</p></div>
-        <div class="limit"><span class="chip"></span><h3>No-limit</h3><p>Bet anything, up to all your chips. The one you see on TV.</p></div>
+        <div class="limit"><span class="chip gold"></span><h3 data-de='Fixed-Limit <span class="badge">am besten mit Kindern</span>'>Fixed-limit <span class="badge">best with kids</span></h3><p data-de="Jeder Einsatz hat eine feste Größe: 2 Chips in den ersten zwei Runden, 4 in den letzten zwei. Höchstens 4 Einsätze pro Runde.">Every bet is a set size: 2 chips in the first two rounds, 4 in the last two. Max 4 bets per round.</p></div>
+        <div class="limit"><span class="chip blue"></span><h3 data-de="Pot-Limit">Pot-limit</h3><p data-de="Du darfst höchstens so viel setzen, wie im Pot liegt.">You can bet up to the size of the pot.</p></div>
+        <div class="limit"><span class="chip"></span><h3 data-de="No-Limit">No-limit</h3><p data-de="Setz so viel du willst, bis zu all deinen Chips. Das ist die Variante aus dem Fernsehen.">Bet anything, up to all your chips. The one you see on TV.</p></div>
       </div>
 
-      <h3 style="margin-top:8px">Raising rules</h3>
+      <h3 style="margin-top:8px" data-de="Regeln zum Erhöhen">Raising rules</h3>
       <ul class="ticks">
-        <li><span>The smallest bet is the big blind.</span></li>
-        <li><span>A raise must be at least as big as the last one. Someone bets 4? You raise to 8 or more.</span></li>
-        <li><span>Say "raise" first, then put in your chips all at once.</span></li>
+        <li><span data-de="Der kleinste Einsatz ist der Big Blind.">The smallest bet is the big blind.</span></li>
+        <li><span data-de="Eine Erhöhung muss mindestens so groß sein wie die letzte. Jemand setzt 4? Dann erhöhst du auf 8 oder mehr.">A raise must be at least as big as the last one. Someone bets 4? You raise to 8 or more.</span></li>
+        <li><span data-de="Sag zuerst „Ich erhöhe“ und leg dann alle Chips auf einmal hin.">Say "raise" first, then put in your chips all at once.</span></li>
       </ul>
 
-      <h3 style="margin-top:8px">Not enough chips?</h3>
-      <p>You're never out just because the bet is too big. Go all-in with what you have. You can only win as much from each player as you put in yourself. The extra chips from the others go into a <b>side pot</b> that only they can win.</p>
+      <h3 style="margin-top:8px" data-de="Nicht genug Chips?">Not enough chips?</h3>
+      <p data-de="Du fliegst nie raus, nur weil der Einsatz zu hoch ist. Geh mit dem, was du hast, all-in. Du kannst von jedem Spieler nur so viel gewinnen, wie du selbst gesetzt hast. Die zusätzlichen Chips der anderen kommen in einen <b>Nebenpot</b>, den nur sie gewinnen können.">You're never out just because the bet is too big. Go all-in with what you have. You can only win as much from each player as you put in yourself. The extra chips from the others go into a <b>side pot</b> that only they can win.</p>
       <div class="note green">
-        <b>Example</b>
-        <p>Sam goes all-in with 10. Lisa and Tom both put in 30. The main pot is 30 (10 from each) and anyone can win it. The side pot is 40, and only Lisa or Tom can win that.</p>
+        <b data-de="Beispiel">Example</b>
+        <p data-de="Sam geht mit 10 all-in. Lisa und Tom setzen beide 30. Der Hauptpot ist 30 (10 von jedem), den kann jeder gewinnen. Der Nebenpot ist 40, den können nur Lisa oder Tom gewinnen.">Sam goes all-in with 10. Lisa and Tom both put in 30. The main pot is 30 (10 from each) and anyone can win it. The side pot is 40, and only Lisa or Tom can win that.</p>
       </div>
 
-      <h3 style="margin-top:8px">Starting chips at home</h3>
-      <div class="stacks" aria-label="Each player starts with 10 white chips worth 1, 8 red chips worth 5 and 5 blue chips worth 10: 100 in total.">
-        <div class="stack-col"><div class="pile"><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span></div><b>10×</b><small>white = 1</small></div>
-        <div class="stack-col"><div class="pile"><span class="chip"></span><span class="chip"></span><span class="chip"></span></div><b>8×</b><small>red = 5</small></div>
-        <div class="stack-col"><div class="pile"><span class="chip blue"></span><span class="chip blue"></span></div><b>5×</b><small>blue = 10</small></div>
+      <h3 style="margin-top:8px" data-de="Start-Chips für zu Hause">Starting chips at home</h3>
+      <div class="stacks" aria-label="Each player starts with 10 white chips worth 1, 8 red chips worth 5 and 5 blue chips worth 10: 100 in total." data-de-aria="Jeder Spieler bekommt 10 weiße Chips zu 1, 8 rote zu 5 und 5 blaue zu 10: insgesamt 100.">
+        <div class="stack-col"><div class="pile"><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span><span class="chip" style="--c:#e9e4da"></span></div><b>10×</b><small data-de="weiß = 1">white = 1</small></div>
+        <div class="stack-col"><div class="pile"><span class="chip"></span><span class="chip"></span><span class="chip"></span></div><b>8×</b><small data-de="rot = 5">red = 5</small></div>
+        <div class="stack-col"><div class="pile"><span class="chip blue"></span><span class="chip blue"></span></div><b>5×</b><small data-de="blau = 10">blue = 10</small></div>
       </div>
-      <p>That's <b>100 each</b>. Start with blinds 1 and 2. Want the game to finish before bedtime? Double the blinds every 20 to 30 minutes.</p>
+      <p data-de="Das sind <b>100 pro Person</b>. Fangt mit Blinds von 1 und 2 an. Soll das Spiel vor dem Schlafengehen fertig sein? Verdoppelt die Blinds alle 20 bis 30 Minuten.">That's <b>100 each</b>. Start with blinds 1 and 2. Want the game to finish before bedtime? Double the blinds every 20 to 30 minutes.</p>
       <div class="note">
-        <b>Just two players?</b>
-        <p>The dealer pays the small blind and goes first before the flop. After the flop, the other player goes first.</p>
+        <b data-de="Nur zu zweit?">Just two players?</b>
+        <p data-de="Der Dealer zahlt den Small Blind und ist vor dem Flop zuerst dran. Nach dem Flop ist der andere Spieler zuerst dran.">The dealer pays the small blind and goes first before the flop. After the flop, the other player goes first.</p>
       </div>
     </div>
   </div>
@@ -645,42 +658,42 @@
 <section class="view" id="answers" aria-label="Settle it">
   <div class="wrap">
     <header class="page-head">
-      <span class="kicker">Settle it</span>
-      <h2>Quick answers</h2>
-      <p class="lead">The questions that always start an argument.</p>
+      <span class="kicker" data-de="Wer hat recht?">Settle it</span>
+      <h2 data-de="Schnelle Antworten">Quick answers</h2>
+      <p class="lead" data-de="Die Fragen, über die am Tisch immer gestritten wird.">The questions that always start an argument.</p>
     </header>
     <div class="stack qa">
-      <div class="q"><h3>Does a full house beat a flush?</h3><span class="yes">YES</span>
-        <div class="cards sm" data-hand="8S 8D 8C 4H 4S"><span class="beats">beats</span></div>
+      <div class="q"><h3 data-de="Schlägt ein Full House einen Flush?">Does a full house beat a flush?</h3><span class="yes" data-de="JA">YES</span>
+        <div class="cards sm" data-hand="8S 8D 8C 4H 4S"><span class="beats" data-de="schlägt">beats</span></div>
         <div class="cards sm" data-hand="AD JD 8D 6D 2D"></div></div>
-      <div class="q"><h3>Does a flush beat four of a kind ("poker")?</h3><span class="no">NO</span>
-        <p>Four of a kind wins. Only a straight flush or royal flush beats it.</p></div>
-      <div class="q"><h3>Does a flush beat a straight?</h3><span class="yes">YES</span>
-        <p>5 cards of one suit is harder to get than 5 in a row.</p></div>
-      <div class="q"><h3>Does a straight beat three of a kind?</h3><span class="yes">YES</span></div>
-      <div class="q"><h3>Is a straight flush just a flush?</h3><span class="no">NO</span>
-        <p>It's in a row <b>and</b> one suit, which makes it the second best hand there is.</p>
+      <div class="q"><h3 data-de="Schlägt ein Flush einen Vierling („Poker“)?">Does a flush beat four of a kind ("poker")?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Der Vierling gewinnt. Nur ein Straight Flush oder Royal Flush schlägt ihn.">Four of a kind wins. Only a straight flush or royal flush beats it.</p></div>
+      <div class="q"><h3 data-de="Schlägt ein Flush eine Straße?">Does a flush beat a straight?</h3><span class="yes" data-de="JA">YES</span>
+        <p data-de="5 Karten einer Farbe sind schwerer zu bekommen als 5 in einer Reihe.">5 cards of one suit is harder to get than 5 in a row.</p></div>
+      <div class="q"><h3 data-de="Schlägt eine Straße einen Drilling?">Does a straight beat three of a kind?</h3><span class="yes" data-de="JA">YES</span></div>
+      <div class="q"><h3 data-de="Ist ein Straight Flush nur ein Flush?">Is a straight flush just a flush?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Er ist eine Reihe <b>und</b> eine Farbe. Damit ist er die zweitbeste Hand überhaupt.">It's in a row <b>and</b> one suit, which makes it the second best hand there is.</p>
         <div class="cards sm" data-hand="9H 8H 7H 6H 5H"></div></div>
-      <div class="q"><h3>Is A-2-3-4-5 a straight?</h3><span class="yes">YES</span>
-        <p>It's the lowest straight. The Ace counts as 1 here.</p></div>
-      <div class="q"><h3>Is Q-K-A-2-3 a straight?</h3><span class="no">NO</span>
-        <p>No going around the corner. The Ace is either the top or the bottom.</p></div>
-      <div class="q"><h3>Is one suit better than another?</h3><span class="no">NO</span>
-        <p>All four suits are equal.</p></div>
-      <div class="q"><h3>Same pair? Does the next card count?</h3><span class="yes">YES</span>
-        <p>The highest other card (the "kicker") wins.</p>
-        <div class="cards sm" data-hand="KH KC AD 7S 3C"><span class="beats">beats</span></div>
+      <div class="q"><h3 data-de="Ist A-2-3-4-5 eine Straße?">Is A-2-3-4-5 a straight?</h3><span class="yes" data-de="JA">YES</span>
+        <p data-de="Es ist die niedrigste Straße. Das Ass zählt hier als 1.">It's the lowest straight. The Ace counts as 1 here.</p></div>
+      <div class="q"><h3 data-de="Ist Q-K-A-2-3 eine Straße?">Is Q-K-A-2-3 a straight?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Nicht „um die Ecke“. Das Ass ist entweder ganz oben oder ganz unten.">No going around the corner. The Ace is either the top or the bottom.</p></div>
+      <div class="q"><h3 data-de="Ist eine Farbe besser als eine andere?">Is one suit better than another?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Alle vier Farben sind gleich viel wert.">All four suits are equal.</p></div>
+      <div class="q"><h3 data-de="Gleiches Paar? Zählt dann die nächste Karte?">Same pair? Does the next card count?</h3><span class="yes" data-de="JA">YES</span>
+        <p data-de="Die höchste andere Karte (der „Kicker“) gewinnt.">The highest other card (the "kicker") wins.</p>
+        <div class="cards sm" data-hand="KH KC AD 7S 3C"><span class="beats" data-de="schlägt">beats</span></div>
         <div class="cards sm" data-hand="KD KS QH 7C 3H"></div></div>
-      <div class="q"><h3>Two full houses: does the pair decide?</h3><span class="no">NO</span>
-        <p>The three-of-a-kind part decides first. Three 9s beat three 8s, whatever the pair.</p></div>
-      <div class="q"><h3>Are 3 pairs better than 2 pairs?</h3><span class="no">NO</span>
-        <p>Only 5 cards count, so you just use your two best pairs.</p></div>
-      <div class="q"><h3>Can it be a tie?</h3><span class="yes">YES</span>
-        <p>If the best 5 cards are the same, split the pot.</p></div>
-      <div class="q"><h3>Do I have to show my cards when I win?</h3><span class="no">NO</span>
-        <p>Not if everyone else folded. At a showdown, yes: the last player who bet shows first.</p></div>
-      <div class="q"><h3>Is there five of a kind?</h3><span class="no">NO</span>
-        <p>Not with a normal deck. Only with jokers or wild cards.</p></div>
+      <div class="q"><h3 data-de="Zwei Full Houses: Entscheidet das Paar?">Two full houses: does the pair decide?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Zuerst entscheidet der Drilling. Drei 9er schlagen drei 8er, egal welches Paar dabei ist.">The three-of-a-kind part decides first. Three 9s beat three 8s, whatever the pair.</p></div>
+      <div class="q"><h3 data-de="Sind 3 Paare besser als 2 Paare?">Are 3 pairs better than 2 pairs?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Es zählen nur 5 Karten, also nimmst du einfach deine zwei besten Paare.">Only 5 cards count, so you just use your two best pairs.</p></div>
+      <div class="q"><h3 data-de="Kann es unentschieden ausgehen?">Can it be a tie?</h3><span class="yes" data-de="JA">YES</span>
+        <p data-de="Wenn die besten 5 Karten gleich sind, wird der Pot geteilt.">If the best 5 cards are the same, split the pot.</p></div>
+      <div class="q"><h3 data-de="Muss ich meine Karten zeigen, wenn ich gewinne?">Do I have to show my cards when I win?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Nicht, wenn alle anderen ausgestiegen sind. Beim Showdown schon: Wer zuletzt gesetzt hat, zeigt zuerst.">Not if everyone else folded. At a showdown, yes: the last player who bet shows first.</p></div>
+      <div class="q"><h3 data-de="Gibt es fünf Gleiche?">Is there five of a kind?</h3><span class="no" data-de="NEIN">NO</span>
+        <p data-de="Nicht mit einem normalen Kartenspiel. Nur mit Jokern oder wilden Karten.">Not with a normal deck. Only with jokers or wild cards.</p></div>
     </div>
   </div>
 </section>
@@ -689,76 +702,76 @@
 <section class="view" id="games" aria-label="More games">
   <div class="wrap">
     <header class="page-head">
-      <span class="kicker">More games</span>
-      <h2>Try another way to play</h2>
-      <p class="lead">Same hand rankings. Only the dealing changes.</p>
+      <span class="kicker" data-de="Weitere Spiele">More games</span>
+      <h2 data-de="Probiert mal eine andere Variante">Try another way to play</h2>
+      <p class="lead" data-de="Gleiche Rangfolge der Hände. Nur das Austeilen ist anders.">Same hand rankings. Only the dealing changes.</p>
     </header>
     <div class="stack">
       <article class="game">
         <div class="game-head"><span class="chip"></span><h3>Five Card Draw</h3></div>
-        <div class="facts"><span class="fact"><b>5</b> cards each</span><span class="fact"><b>0</b> shared</span><span class="fact"><b>2</b> betting rounds</span></div>
-        <p>The classic kitchen-table game, and the easiest to learn.</p>
+        <div class="facts"><span class="fact" data-de="<b>5</b> Karten pro Person"><b>5</b> cards each</span><span class="fact" data-de="<b>0</b> gemeinsame"><b>0</b> shared</span><span class="fact" data-de="<b>2</b> Setzrunden"><b>2</b> betting rounds</span></div>
+        <p data-de="Der Klassiker vom Küchentisch und am leichtesten zu lernen.">The classic kitchen-table game, and the easiest to learn.</p>
         <ol>
-          <li>Everyone puts 1 chip in the pot.</li>
-          <li>Deal 5 secret cards each. Bet.</li>
-          <li>Swap: throw away up to 3 cards and get new ones.</li>
-          <li>Bet again. Then show: best hand wins.</li>
+          <li data-de="Jeder legt 1 Chip in den Pot.">Everyone puts 1 chip in the pot.</li>
+          <li data-de="Jeder bekommt 5 geheime Karten. Setzen.">Deal 5 secret cards each. Bet.</li>
+          <li data-de="Tauschen: Wirf bis zu 3 Karten weg und nimm dir neue.">Swap: throw away up to 3 cards and get new ones.</li>
+          <li data-de="Nochmal setzen. Dann aufdecken: Die beste Hand gewinnt.">Bet again. Then show: best hand wins.</li>
         </ol>
       </article>
 
       <article class="game">
         <div class="game-head"><span class="chip gold"></span><h3>Omaha</h3></div>
-        <div class="facts"><span class="fact"><b>4</b> cards each</span><span class="fact"><b>5</b> shared</span><span class="fact"><b>4</b> betting rounds</span></div>
-        <p>Played just like Texas Hold'em, but you get 4 cards.</p>
-        <div class="big-rule">The catch: use exactly 2 of your cards and exactly 3 shared cards.</div>
+        <div class="facts"><span class="fact" data-de="<b>4</b> Karten pro Person"><b>4</b> cards each</span><span class="fact" data-de="<b>5</b> gemeinsame"><b>5</b> shared</span><span class="fact" data-de="<b>4</b> Setzrunden"><b>4</b> betting rounds</span></div>
+        <p data-de="Wird genau wie Texas Hold'em gespielt, aber du bekommst 4 Karten.">Played just like Texas Hold'em, but you get 4 cards.</p>
+        <div class="big-rule" data-de="Der Haken: Nimm genau 2 deiner Karten und genau 3 gemeinsame Karten.">The catch: use exactly 2 of your cards and exactly 3 shared cards.</div>
         <div class="cards sm" data-hand="AH KS 9S 8D"></div>
         <div class="cards sm" data-hand="QH JH 5H 2H 7S"></div>
-        <p style="font-size:15px;color:var(--muted)">4 hearts on the table plus your A♥ would be a flush in Hold'em. In Omaha it's not: you need 2 hearts in your own hand.</p>
+        <p style="font-size:15px;color:var(--muted)" data-de="4 Herz auf dem Tisch plus dein A♥ wären in Hold'em ein Flush. In Omaha nicht: Du brauchst 2 Herz auf deiner eigenen Hand.">4 hearts on the table plus your A♥ would be a flush in Hold'em. In Omaha it's not: you need 2 hearts in your own hand.</p>
       </article>
 
       <article class="game">
         <div class="game-head"><span class="chip blue"></span><h3>Seven Card Stud</h3></div>
-        <div class="facts"><span class="fact"><b>7</b> cards each</span><span class="fact"><b>0</b> shared</span><span class="fact"><b>5</b> betting rounds</span></div>
-        <p>No blinds. Some of your cards are face up, so everyone can see part of your hand.</p>
+        <div class="facts"><span class="fact" data-de="<b>7</b> Karten pro Person"><b>7</b> cards each</span><span class="fact" data-de="<b>0</b> gemeinsame"><b>0</b> shared</span><span class="fact" data-de="<b>5</b> Setzrunden"><b>5</b> betting rounds</span></div>
+        <p data-de="Keine Blinds. Einige deiner Karten liegen offen, so sieht jeder einen Teil deiner Hand.">No blinds. Some of your cards are face up, so everyone can see part of your hand.</p>
         <div class="cards sm" data-hand="?? ?? 9C KD 9H 4S ??"></div>
         <ol>
-          <li>Everyone puts 1 chip in. Deal 2 down, 1 up.</li>
-          <li>Lowest face-up card starts the betting.</li>
-          <li>Deal 1 face-up card and bet, three times.</li>
-          <li>Last card face down. Bet, then show your best 5 of 7.</li>
+          <li data-de="Jeder legt 1 Chip rein. Austeilen: 2 Karten verdeckt, 1 offen.">Everyone puts 1 chip in. Deal 2 down, 1 up.</li>
+          <li data-de="Wer die niedrigste offene Karte hat, fängt mit dem Setzen an.">Lowest face-up card starts the betting.</li>
+          <li data-de="Dreimal: 1 offene Karte austeilen und setzen.">Deal 1 face-up card and bet, three times.</li>
+          <li data-de="Letzte Karte verdeckt. Setzen, dann zeigt jeder seine besten 5 von 7.">Last card face down. Bet, then show your best 5 of 7.</li>
         </ol>
       </article>
 
       <article class="game">
-        <div class="game-head"><span class="chip plum"></span><h3>Wild cards</h3></div>
-        <p>Pick a card that can be anything you want, like all 2s or the jokers. Hands get much bigger, and <b>five of a kind</b> becomes the best hand of all.</p>
-        <p style="color:var(--muted);font-size:15px">Agree on it before you start dealing.</p>
+        <div class="game-head"><span class="chip plum"></span><h3 data-de="Wilde Karten">Wild cards</h3></div>
+        <p data-de="Bestimmt eine Karte, die alles sein darf, zum Beispiel alle 2er oder die Joker. Die Hände werden viel stärker, und <b>fünf Gleiche</b> werden die beste Hand von allen.">Pick a card that can be anything you want, like all 2s or the jokers. Hands get much bigger, and <b>five of a kind</b> becomes the best hand of all.</p>
+        <p style="color:var(--muted);font-size:15px" data-de="Sprecht das ab, bevor ihr austeilt.">Agree on it before you start dealing.</p>
       </article>
     </div>
   </div>
 </section>
 
-<nav class="tabbar" aria-label="Sections">
+<nav class="tabbar" aria-label="Sections" data-de-aria="Bereiche">
   <div class="in">
-    <a href="#home"><span class="ic">⌂</span>Home</a>
-    <a href="#hands"><span class="ic">♥</span>Hands</a>
+    <a href="#home"><span class="ic">⌂</span><span class="tl" data-de="Start">Home</span></a>
+    <a href="#hands"><span class="ic">♥</span><span class="tl" data-de="Hände">Hands</span></a>
     <a href="#holdem"><span class="ic">♠</span>Hold'em</a>
-    <a href="#betting"><span class="ic">♦</span>Betting</a>
-    <a href="#answers"><span class="ic">♣</span>Settle it</a>
+    <a href="#betting"><span class="ic">♦</span><span class="tl" data-de="Setzen">Betting</span></a>
+    <a href="#answers"><span class="ic">♣</span><span class="tl" data-de="Fragen">Settle it</span></a>
   </div>
 </nav>
 
 <div class="sheet-back" id="share-sheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
-    <h3 id="share-title">Share Haruku Poker</h3>
-    <p>Let the others scan this with their phone camera.</p>
-    <div class="qr" id="qr" aria-label="QR code for the app link"></div>
+    <h3 id="share-title" data-de="Haruku Poker teilen">Share Haruku Poker</h3>
+    <p data-de="Die anderen können das mit der Handykamera scannen.">Let the others scan this with their phone camera.</p>
+    <div class="qr" id="qr" aria-label="QR code for the app link" data-de-aria="QR-Code mit dem Link zur App"></div>
     <span class="link" id="share-link"></span>
     <div class="sheet-btns">
-      <button class="btn ghost" id="copy-link">Copy link</button>
-      <button class="btn" id="send-link">Send link</button>
+      <button class="btn ghost" id="copy-link" data-de="Link kopieren">Copy link</button>
+      <button class="btn" id="send-link" data-de="Link senden">Send link</button>
     </div>
-    <button class="btn ghost" id="close-share" style="width:100%">Close</button>
+    <button class="btn ghost" id="close-share" style="width:100%" data-de="Schließen">Close</button>
   </div>
 </div>
 <div class="toast" id="toast" hidden></div>
@@ -766,9 +779,31 @@
 <script src="vendor/qrcode.js"></script>
 <script>
 (function () {
+  // ---------- Language ----------
+  const UI = {
+    en: {
+      tie: "Tie?", same: "Same kind of hand!", sameSub: n => `Tap ${n} below to see who wins a tie.`,
+      wins: n => `${n} wins`, winsSub: (w, wi, l, li, far) => `${w} is number ${wi}, ${l.toLowerCase()} is number ${li}${far ? ". Not even close!" : "."}`,
+      step: (n, m) => `Step ${n} of ${m}`, next: "Next", again: "Again", pot: "Pot",
+      copied: "Link copied!", selected: "Link selected. Press and hold to copy.", shareText: "Poker rules for our game night",
+      down: "face-down card", cardName: (r, s) => `${r} of ${s}`,
+      ranks: { A: "Ace", K: "King", Q: "Queen", J: "Jack", T: "10" }, suits: { S: "spades", H: "hearts", D: "diamonds", C: "clubs" },
+    },
+    de: {
+      tie: "Gleichstand?", same: "Gleiche Art von Hand!", sameSub: n => `Tippe unten auf ${n}, um zu sehen, wer bei Gleichstand gewinnt.`,
+      wins: n => `${n} gewinnt`, winsSub: (w, wi, l, li, far) => `${w} ist Nummer ${wi}, ${l} ist Nummer ${li}.${far ? " Nicht mal knapp!" : ""}`,
+      step: (n, m) => `Schritt ${n} von ${m}`, next: "Weiter", again: "Nochmal", pot: "Pot",
+      copied: "Link kopiert!", selected: "Link markiert. Zum Kopieren gedrückt halten.", shareText: "Pokerregeln für unseren Spieleabend",
+      down: "verdeckte Karte", cardName: (r, s) => `${s}-${r}`,
+      ranks: { A: "Ass", K: "König", Q: "Dame", J: "Bube", T: "10" }, suits: { S: "Pik", H: "Herz", D: "Karo", C: "Kreuz" },
+    },
+  };
+  let lang = "en";
+  try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
+  if (lang !== "en" && lang !== "de") lang = (navigator.language || "").toLowerCase().startsWith("de") ? "de" : "en";
+  const t = () => UI[lang];
+
   const SUITS = { S: "♠", H: "♥", D: "♦", C: "♣" };
-  const SUIT_NAMES = { S: "spades", H: "hearts", D: "diamonds", C: "clubs" };
-  const RANK_NAMES = { A: "Ace", K: "King", Q: "Queen", J: "Jack", T: "10" };
 
   // "AS" = Ace of spades, "TH" = 10 of hearts, "??" = face down, "__" = empty spot.
   function card(code) {
@@ -777,13 +812,21 @@
     fill(c, code);
     return c;
   }
+  function label(c) {
+    const code = c.dataset.code;
+    if (code === "??") c.setAttribute("aria-label", t().down);
+    else if (code && code !== "__") c.setAttribute("aria-label", t().cardName(t().ranks[code[0]] || code[0], t().suits[code[1]]));
+  }
   function fill(c, code) {
-    if (code === "??") { c.classList.add("back"); c.setAttribute("aria-label", "face-down card"); return; }
-    if (code === "__") { c.classList.add("slot"); c.setAttribute("aria-hidden", "true"); return; }
-    const r = code[0] === "T" ? "10" : code[0], s = code[1];
-    if (s === "H" || s === "D") c.classList.add("red");
-    c.innerHTML = `<span class="r">${r}</span><span class="s">${SUITS[s]}</span>`;
-    c.setAttribute("aria-label", `${RANK_NAMES[code[0]] || r} of ${SUIT_NAMES[s]}`);
+    c.dataset.code = code;
+    if (code === "??") c.classList.add("back");
+    else if (code === "__") { c.classList.add("slot"); c.setAttribute("aria-hidden", "true"); }
+    else {
+      const r = code[0] === "T" ? "10" : code[0], s = code[1];
+      if (s === "H" || s === "D") c.classList.add("red");
+      c.innerHTML = `<span class="r">${r}</span><span class="s">${SUITS[s]}</span>`;
+    }
+    label(c);
   }
   function hand(el, codes) {
     const extra = [...el.children];
@@ -797,80 +840,111 @@
 
   // ---------- Hand ladder ----------
   const HANDS = [
-    { name: "Royal flush", say: "A, K, Q, J, 10 all in one suit. Unbeatable.", cards: "AS KS QS JS TS",
-      tie: "Two royal flushes? Split the pot. No suit is better." },
-    { name: "Straight flush", say: "Five in a row, all one suit.", cards: "9H 8H 7H 6H 5H",
-      tie: "The highest top card wins: 9-high beats 8-high." },
-    { name: "Four of a kind", aka: "poker", say: "Four cards the same.", cards: "QC QD QH QS 7D",
-      tie: "Higher four wins: four Kings beat four Queens.", more: "Also called quads or carré." },
-    { name: "Full house", say: "Three the same plus a pair.", cards: "8S 8D 8C 4H 4S",
-      tie: "The three decide first: 8-8-8-4-4 beats 7-7-7-A-A. Same three? Then the pair decides." },
-    { name: "Flush", say: "Five cards of one suit, any order.", cards: "AD JD 8D 6D 2D",
-      tie: "Highest card wins. Same? Compare the next one down, and so on." },
-    { name: "Straight", say: "Five in a row, mixed suits.", cards: "TC 9D 8S 7H 6C",
-      tie: "The highest top card wins.", more: "The Ace can be top (10-J-Q-K-A) or bottom (A-2-3-4-5), but you can't wrap around the corner." },
-    { name: "Three of a kind", say: "Three cards the same.", cards: "7S 7H 7D KC 2S",
-      tie: "Higher three wins. Same? The best other card decides.", more: "Also called trips or a set." },
-    { name: "Two pair", say: "Two different pairs.", cards: "JH JC 4S 4D AH",
-      tie: "Compare the top pair, then the second pair, then the last card." },
-    { name: "One pair", say: "Two cards the same.", cards: "TS TH 8C 5D 2C",
-      tie: "Higher pair wins. Same pair? The highest other card (the kicker) wins." },
-    { name: "High card", say: "Nothing else? Your highest card counts.", cards: "AC JS 9H 6D 3C",
-      tie: "Compare the highest cards, then the next ones down." },
+    { cards: "AS KS QS JS TS",
+      en: { name: "Royal flush", say: "A, K, Q, J, 10 all in one suit. Unbeatable.", tie: "Two royal flushes? Split the pot. No suit is better." },
+      de: { name: "Royal Flush", say: "A, K, Q, J, 10 alle in einer Farbe. Unschlagbar.", tie: "Zwei Royal Flushes? Pot teilen. Keine Farbe ist besser." } },
+    { cards: "9H 8H 7H 6H 5H",
+      en: { name: "Straight flush", say: "Five in a row, all one suit.", tie: "The highest top card wins: 9-high beats 8-high." },
+      de: { name: "Straight Flush", say: "Fünf in einer Reihe, alle in einer Farbe.", tie: "Die höchste oberste Karte gewinnt: Bis zur 9 schlägt bis zur 8." } },
+    { cards: "QC QD QH QS 7D",
+      en: { name: "Four of a kind", aka: "poker", say: "Four cards the same.", tie: "Higher four wins: four Kings beat four Queens.", more: "Also called quads or carré." },
+      de: { name: "Vierling", aka: "Poker", say: "Vier gleiche Karten.", tie: "Der höhere Vierling gewinnt: Vier Könige schlagen vier Damen.", more: "Auch „Quads“ oder „Carré“ genannt." } },
+    { cards: "8S 8D 8C 4H 4S",
+      en: { name: "Full house", say: "Three the same plus a pair.", tie: "The three decide first: 8-8-8-4-4 beats 7-7-7-A-A. Same three? Then the pair decides." },
+      de: { name: "Full House", say: "Drei gleiche plus ein Paar.", tie: "Zuerst entscheidet der Drilling: 8-8-8-4-4 schlägt 7-7-7-A-A. Gleicher Drilling? Dann entscheidet das Paar." } },
+    { cards: "AD JD 8D 6D 2D",
+      en: { name: "Flush", say: "Five cards of one suit, any order.", tie: "Highest card wins. Same? Compare the next one down, and so on." },
+      de: { name: "Flush", say: "Fünf Karten einer Farbe, egal welche.", tie: "Die höchste Karte gewinnt. Gleich? Dann die nächste und so weiter." } },
+    { cards: "TC 9D 8S 7H 6C",
+      en: { name: "Straight", say: "Five in a row, mixed suits.", tie: "The highest top card wins.", more: "The Ace can be top (10-J-Q-K-A) or bottom (A-2-3-4-5), but you can't wrap around the corner." },
+      de: { name: "Straße", say: "Fünf in einer Reihe, gemischte Farben.", tie: "Die höchste oberste Karte gewinnt.", more: "Das Ass kann oben (10-J-Q-K-A) oder unten (A-2-3-4-5) sein, aber nicht „um die Ecke“." } },
+    { cards: "7S 7H 7D KC 2S",
+      en: { name: "Three of a kind", say: "Three cards the same.", tie: "Higher three wins. Same? The best other card decides.", more: "Also called trips or a set." },
+      de: { name: "Drilling", say: "Drei gleiche Karten.", tie: "Der höhere Drilling gewinnt. Gleich? Dann entscheidet die beste andere Karte.", more: "Auch „Trips“ oder „Set“ genannt." } },
+    { cards: "JH JC 4S 4D AH",
+      en: { name: "Two pair", say: "Two different pairs.", tie: "Compare the top pair, then the second pair, then the last card." },
+      de: { name: "Zwei Paare", say: "Zwei verschiedene Paare.", tie: "Erst das höhere Paar vergleichen, dann das zweite, dann die letzte Karte." } },
+    { cards: "TS TH 8C 5D 2C",
+      en: { name: "One pair", say: "Two cards the same.", tie: "Higher pair wins. Same pair? The highest other card (the kicker) wins." },
+      de: { name: "Ein Paar", say: "Zwei gleiche Karten.", tie: "Das höhere Paar gewinnt. Gleiches Paar? Dann gewinnt die höchste andere Karte (der Kicker)." } },
+    { cards: "AC JS 9H 6D 3C",
+      en: { name: "High card", say: "Nothing else? Your highest card counts.", tie: "Compare the highest cards, then the next ones down." },
+      de: { name: "Höchste Karte", say: "Sonst nichts? Dann zählt deine höchste Karte.", tie: "Vergleicht die höchsten Karten, dann die nächsten." } },
   ];
   const ladder = document.getElementById("ladder");
-  HANDS.forEach((h, i) => {
-    const li = document.createElement("li");
-    li.className = "rung";
-    li.innerHTML = `
-      <button aria-expanded="false" aria-controls="more-${i}">
-        <span class="place">${i + 1}</span>
-        <span class="rung-name">${h.name}${h.aka ? `<span class="aka">${h.aka}</span>` : ""}</span>
-        <span class="plus" aria-hidden="true">+</span>
-        <span class="rung-say">${h.say}</span>
-      </button>
-      <div class="cards sm"></div>
-      <div class="rung-more" id="more-${i}">
-        <p><b>Tie?</b> ${h.tie}</p>
-        ${h.more ? `<p>${h.more}</p>` : ""}
-      </div>`;
-    hand(li.querySelector(".cards"), h.cards);
-    const btn = li.querySelector("button");
-    btn.addEventListener("click", () => {
-      const open = li.classList.toggle("open");
-      btn.setAttribute("aria-expanded", open);
+  function buildLadder() {
+    const open = new Set([...ladder.querySelectorAll(".rung.open")].map(li => li.dataset.i));
+    ladder.textContent = "";
+    HANDS.forEach((H, i) => {
+      const h = H[lang];
+      const li = document.createElement("li");
+      li.className = "rung" + (open.has(String(i)) ? " open" : "");
+      li.dataset.i = i;
+      li.innerHTML = `
+        <button aria-expanded="${open.has(String(i))}" aria-controls="more-${i}">
+          <span class="place">${i + 1}</span>
+          <span class="rung-name">${h.name}${h.aka ? `<span class="aka">${h.aka}</span>` : ""}</span>
+          <span class="plus" aria-hidden="true">+</span>
+          <span class="rung-say">${h.say}</span>
+        </button>
+        <div class="cards sm"></div>
+        <div class="rung-more" id="more-${i}">
+          <p><b>${t().tie}</b> ${h.tie}</p>
+          ${h.more ? `<p>${h.more}</p>` : ""}
+        </div>`;
+      hand(li.querySelector(".cards"), H.cards);
+      const btn = li.querySelector("button");
+      btn.addEventListener("click", () => btn.setAttribute("aria-expanded", li.classList.toggle("open")));
+      ladder.appendChild(li);
     });
-    ladder.appendChild(li);
-  });
+  }
 
   // ---------- Hand duel ----------
   const a = document.getElementById("duel-a"), b = document.getElementById("duel-b"), verdict = document.getElementById("verdict");
-  [a, b].forEach(sel => HANDS.forEach((h, i) => sel.add(new Option(h.name, i))));
-  a.value = 4; b.value = 2;
+  function buildDuel() {
+    [a, b].forEach(sel => {
+      const v = sel.value;
+      sel.textContent = "";
+      HANDS.forEach((H, i) => sel.add(new Option(H[lang].name, i)));
+      if (v !== "") sel.value = v;
+    });
+  }
   function judge() {
-    const x = +a.value, y = +b.value;
+    const x = +a.value, y = +b.value, n = i => HANDS[i][lang].name;
     if (x === y) {
-      verdict.innerHTML = `Same kind of hand!<small>Tap ${HANDS[x].name} below to see who wins a tie.</small>`;
+      verdict.innerHTML = `${t().same}<small>${t().sameSub(n(x))}</small>`;
     } else {
       const win = Math.min(x, y), lose = Math.max(x, y);
-      const gap = lose - win;
-      verdict.innerHTML = `${HANDS[win].name} wins<small>${HANDS[win].name} is number ${win + 1}, ${HANDS[lose].name.toLowerCase()} is number ${lose + 1}${gap > 3 ? ". Not even close!" : "."}</small>`;
+      verdict.innerHTML = `${t().wins(n(win))}<small>${t().winsSub(n(win), win + 1, n(lose), lose + 1, lose - win > 3)}</small>`;
     }
     verdict.classList.remove("pop"); void verdict.offsetWidth; verdict.classList.add("pop");
   }
   a.addEventListener("change", judge); b.addEventListener("change", judge);
-  judge();
 
   // ---------- Hold'em walkthrough ----------
   const BOARD = ["KS", "9C", "4D", "7H", "2S"];
   const STEPS = [
-    { t: "Pick a dealer", d: "Put a coin or token in front of the dealer. That's the dealer button. It moves one seat left after every hand.", board: 0, hole: false, pot: "" },
-    { t: "Blinds go in", d: "The player left of the dealer puts in the small blind (1). The next player puts in the big blind (2).", board: 0, hole: false, pot: "3" },
-    { t: "Two secret cards", d: "Everyone gets 2 cards face down. Peek, but don't show anyone!", bet: "Betting round 1: starts left of the big blind", board: 0, hole: true, pot: "3" },
-    { t: "The flop", d: "Three shared cards go face up in the middle. Everyone can use them.", bet: "Betting round 2: starts left of the dealer", board: 3, hole: true, pot: "8" },
-    { t: "The turn", d: "A fourth shared card.", bet: "Betting round 3", board: 4, hole: true, pot: "16" },
-    { t: "The river", d: "The fifth and last shared card.", bet: "Betting round 4: last chance to bet", board: 5, hole: true, pot: "24" },
-    { t: "Showdown!", d: "Everyone still in shows their cards. Best 5 cards out of 7 wins the pot. Here: a pair of Kings, with A, 9 and 7.", board: 5, hole: true, pot: "32", show: true },
+    { board: 0, hole: false, pot: "",
+      en: { t: "Pick a dealer", d: "Put a coin or token in front of the dealer. That's the dealer button. It moves one seat left after every hand." },
+      de: { t: "Dealer bestimmen", d: "Leg eine Münze oder einen Spielstein vor den Dealer. Das ist der Dealer-Button. Er wandert nach jeder Runde einen Platz nach links." } },
+    { board: 0, hole: false, pot: "3",
+      en: { t: "Blinds go in", d: "The player left of the dealer puts in the small blind (1). The next player puts in the big blind (2)." },
+      de: { t: "Blinds setzen", d: "Der Spieler links vom Dealer setzt den Small Blind (1). Der nächste Spieler setzt den Big Blind (2)." } },
+    { board: 0, hole: true, pot: "3",
+      en: { t: "Two secret cards", d: "Everyone gets 2 cards face down. Peek, but don't show anyone!", bet: "Betting round 1: starts left of the big blind" },
+      de: { t: "Zwei geheime Karten", d: "Jeder bekommt 2 verdeckte Karten. Schau sie dir an, aber zeig sie niemandem!", bet: "Setzrunde 1: beginnt links vom Big Blind" } },
+    { board: 3, hole: true, pot: "8",
+      en: { t: "The flop", d: "Three shared cards go face up in the middle. Everyone can use them.", bet: "Betting round 2: starts left of the dealer" },
+      de: { t: "Der Flop", d: "Drei gemeinsame Karten kommen offen in die Mitte. Jeder darf sie benutzen.", bet: "Setzrunde 2: beginnt links vom Dealer" } },
+    { board: 4, hole: true, pot: "16",
+      en: { t: "The turn", d: "A fourth shared card.", bet: "Betting round 3" },
+      de: { t: "Der Turn", d: "Eine vierte gemeinsame Karte.", bet: "Setzrunde 3" } },
+    { board: 5, hole: true, pot: "24",
+      en: { t: "The river", d: "The fifth and last shared card.", bet: "Betting round 4: last chance to bet" },
+      de: { t: "Der River", d: "Die fünfte und letzte gemeinsame Karte.", bet: "Setzrunde 4: letzte Chance zu setzen" } },
+    { board: 5, hole: true, pot: "32", show: true,
+      en: { t: "Showdown!", d: "Everyone still in shows their cards. Best 5 cards out of 7 wins the pot. Here: a pair of Kings, with A, 9 and 7." },
+      de: { t: "Showdown!", d: "Alle, die noch dabei sind, zeigen ihre Karten. Die besten 5 von 7 Karten gewinnen den Pot. Hier: ein Paar Könige, dazu A, 9 und 7." } },
   ];
   const USED = new Set(["KS", "9C", "7H", "AH", "KD"]);
   let step = 0;
@@ -880,7 +954,7 @@
         dots = document.getElementById("sim-dots");
   STEPS.forEach(() => dots.appendChild(document.createElement("i")));
   function render() {
-    const s = STEPS[step];
+    const s = STEPS[step], txt = s[lang];
     elBoard.textContent = "";
     BOARD.forEach((code, i) => {
       const c = card(i < s.board ? code : "__");
@@ -894,16 +968,43 @@
       if (s.show) c.classList.add("lift");
       elHand.appendChild(c);
     });
-    elPot.innerHTML = s.pot ? `<span class="chip gold"></span>Pot: ${s.pot}` : "";
-    elStep.innerHTML = `<span class="step-num">Step ${step + 1} of ${STEPS.length}</span><h3>${s.t}</h3><p>${s.d}</p>${s.bet ? `<span class="bet-tag"><span class="chip blue" style="width:16px;height:16px"></span>${s.bet}</span>` : ""}`;
+    elPot.innerHTML = s.pot ? `<span class="chip gold"></span>${t().pot}: ${s.pot}` : "";
+    elStep.innerHTML = `<span class="step-num">${t().step(step + 1, STEPS.length)}</span><h3>${txt.t}</h3><p>${txt.d}</p>${txt.bet ? `<span class="bet-tag"><span class="chip blue" style="width:16px;height:16px"></span>${txt.bet}</span>` : ""}`;
     [...dots.children].forEach((d, i) => d.classList.toggle("on", i === step));
     prev.disabled = step === 0;
-    next.textContent = step === STEPS.length - 1 ? "Again" : "Next";
+    next.textContent = step === STEPS.length - 1 ? t().again : t().next;
   }
   prev.addEventListener("click", () => { if (step > 0) { step--; render(); } });
   next.addEventListener("click", () => { step = step === STEPS.length - 1 ? 0 : step + 1; render(); });
-  render();
 
+  // ---------- Static text ----------
+  // English is in the markup; German sits in data-de (inner HTML) and data-de-aria (aria-label).
+  function translateStatic() {
+    document.querySelectorAll("[data-de]").forEach(el => {
+      if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === "de" ? el.dataset.de : el.dataset.en;
+    });
+    document.querySelectorAll("[data-de-aria]").forEach(el => {
+      if (el.dataset.enAria === undefined) el.dataset.enAria = el.getAttribute("aria-label");
+      el.setAttribute("aria-label", lang === "de" ? el.dataset.deAria : el.dataset.enAria);
+    });
+    document.querySelectorAll(".card[data-code]").forEach(label);
+  }
+
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    try { localStorage.setItem("lang", l); } catch (e) {}
+    document.querySelectorAll("[data-lang]").forEach(btn => btn.setAttribute("aria-pressed", btn.dataset.lang === l));
+    translateStatic();
+    buildLadder();
+    buildDuel();
+    judge();
+    render();
+  }
+  document.querySelectorAll("[data-lang]").forEach(btn => btn.addEventListener("click", () => setLang(btn.dataset.lang)));
+  buildDuel(); a.value = 4; b.value = 2;
+  setLang(lang);
 
   // ---------- Share ----------
   const APP_URL = "https://haruku08.github.io/poker/";
@@ -933,14 +1034,14 @@
   sheet.addEventListener("click", e => { if (e.target === sheet) closeSheet(); });
   addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
   async function copy() {
-    try { await navigator.clipboard.writeText(APP_URL); say("Link copied!"); }
-    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("share-link")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); say("Link selected. Press and hold to copy."); }
+    try { await navigator.clipboard.writeText(APP_URL); say(t().copied); }
+    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("share-link")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); say(t().selected); }
   }
   document.getElementById("copy-link").addEventListener("click", copy);
   const send = document.getElementById("send-link");
   if (!navigator.share) send.hidden = true, document.querySelector(".sheet-btns").style.gridTemplateColumns = "1fr";
   send.addEventListener("click", async () => {
-    try { await navigator.share({ title: "Haruku Poker", text: "Poker rules for our game night", url: APP_URL }); }
+    try { await navigator.share({ title: "Haruku Poker", text: t().shareText, url: APP_URL }); }
     catch (e) { if (e.name !== "AbortError") copy(); }
   });
 
